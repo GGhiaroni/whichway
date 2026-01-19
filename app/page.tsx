@@ -1,13 +1,12 @@
+import { Header } from "./components/Header";
+
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4">
-      <h1 className="font-serif text-5xl font-bold text-brand-primary">
-        WhichWay?
-      </h1>
-      <p className="text-xl text-brand-dark">Sua jornada começa aqui.</p>
-      <button className="rounded bg-brand-primary px-4 py-2 text-white hover:bg-brand-dark">
-        Começar
-      </button>
+    <div className="flex min-h-screen flex-col bg-brand-cream">
+      {/* 1. Header Fixo no topo */}
+      <Header />
+
+      <main className="flex-1 pt-16"></main>
     </div>
   );
 }
