@@ -35,7 +35,7 @@ export function Header() {
 
         <div className="md:hidden flex items-center">
           <Sheet>
-            <SheetTrigger>
+            <SheetTrigger asChild>
               <Button
                 variant="ghost"
                 size="icon"
