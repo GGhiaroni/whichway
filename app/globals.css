@@ -57,7 +57,6 @@
   --radius-4xl: calc(var(--radius) + 16px);
 }
 
-/* --- VARIÁVEIS CSS NATIVAS (AQUI VOCÊ PODE AJUSTAR O TEMA DO SHADCN) --- */
 :root {
   --radius: 0.625rem;
   
