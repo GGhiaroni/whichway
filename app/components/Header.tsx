@@ -13,7 +13,7 @@ import Logomarca from "./Logomarca";
 export function Header() {
   return (
     <header className="fixed top-0 z-50 w-full border-b border-brand-primary/10 bg-brand-cream/80 backdrop-blur-md">
-      <div className="flex justify-around px-6">
+      <div className="flex justify-between mx-4">
         <Logomarca />
 
         <nav className="hidden md:flex items-center gap-4">
