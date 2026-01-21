@@ -1,4 +1,8 @@
 import { Button } from "@/components/ui/button";
+import { Menu } from "lucide-react";
+import Link from "next/link";
+import Logomarca from "./Logomarca";
+
 import {
   Sheet,
   SheetContent,
@@ -6,28 +10,25 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
-import Link from "next/link";
-import Logomarca from "./Logomarca";
 
-export function Header() {
+export default function Header() {
   return (
     <header className="fixed top-0 z-50 w-full border-b border-brand-primary/10 bg-brand-cream/80 backdrop-blur-md">
-      <div className="flex justify-between mx-4">
+      <div className="container mx-auto flex h-16 items-center justify-between px-6">
         <Logomarca />
 
         <nav className="hidden md:flex items-center gap-4">
           <Link href="/sign-in">
             <Button
               variant="ghost"
-              className="hover:cursor-pointer font-semibold text-brand-dark hover:bg-brand-primary/10 hover:text-brand-primary"
+              className="font-semibold text-brand-dark hover:bg-brand-primary/10 hover:text-brand-primary cursor-pointer"
             >
               Já sou cadastrado
             </Button>
           </Link>
 
           <Link href="/sign-up">
-            <Button className="font-semibold hover:cursor-pointer bg-brand-primary text-white hover:bg-brand-dark shadow-md">
+            <Button className="bg-brand-primary font-semibold text-white shadow-md hover:bg-brand-dark cursor-pointer">
               Criar conta grátis
             </Button>
           </Link>
@@ -39,7 +40,7 @@ export function Header() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="text-brand-primary hover:bg-brand-primary/10 hover:text-brand-dark"
+                className="text-brand-primary hover:bg-brand-primary/10 hover:text-brand-dark cursor-pointer"
               >
                 <Menu className="h-6 w-6" />
                 <span className="sr-only">Abrir menu</span>
@@ -48,26 +49,26 @@ export function Header() {
 
             <SheetContent
               side="right"
-              className="bg-brand-cream border-brand-primary/20"
+              className="w-[300px] bg-brand-cream border-brand-primary/20 flex flex-col"
             >
-              <SheetHeader>
-                <SheetTitle className="font-serif text-brand-dark text-left">
-                  Menu
+              <SheetHeader className="text-left">
+                <SheetTitle className="font-serif text-2xl text-brand-primary border-b border-brand-primary/10 pb-4">
+                  WhichWay
                 </SheetTitle>
               </SheetHeader>
 
-              <div className="mt-8 flex flex-col items-center gap-4">
-                <Link href="/sign-in">
+              <div className="mt-6 flex flex-col items-start gap-2">
+                <Link href="/sign-in" className="w-full">
                   <Button
                     variant="ghost"
-                    className="text-lg font-semibold text-brand-dark hover:bg-brand-primary/10"
+                    className="w-full justify-start text-lg font-normal text-brand-dark hover:bg-brand-primary/10 hover:text-brand-primary pl-0"
                   >
                     Já sou cadastrado
                   </Button>
                 </Link>
 
-                <Link href="/sign-up">
-                  <Button className="text-lg font-semibold bg-brand-primary text-white hover:bg-brand-dark shadow-md">
+                <Link href="/sign-up" className="w-full">
+                  <Button className="w-full justify-start text-lg font-semibold bg-brand-primary text-white hover:bg-brand-dark shadow-md mt-2">
                     Criar conta grátis
                   </Button>
                 </Link>
