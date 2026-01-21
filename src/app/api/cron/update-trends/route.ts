@@ -22,7 +22,8 @@ export async function GET(request: Request) {
         "city": "Nome da Cidade",
         "country": "Nome do País",
         "description": "Uma frase curta e inspiradora sobre por que visitar agora (max 100 caracteres)",
-        "priceLevel": "Baixo, Médio ou Alto"
+        "priceLevel": "Baixo, Médio ou Alto",
+        "landmark": "Nome do ponto turístico mais famoso e icônico deste lugar em Inglês (ex: Eiffel Tower Paris)"
       }
       `;
 
@@ -35,10 +36,13 @@ export async function GET(request: Request) {
     await prisma.featuredDestination.deleteMany({});
 
     for (const dest of destinations) {
+      const querySearch = `${dest.landmark} iconic view`;
+
       const photoResult = await unsplash.search.getPhotos({
-        query: `${dest.city} ${dest.country} travel`,
+        query: querySearch,
         perPage: 1,
         orientation: "landscape",
+        orderBy: "relevant",
       });
 
       let fallbackImage =
