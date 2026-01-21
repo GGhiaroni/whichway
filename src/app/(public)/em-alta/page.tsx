@@ -83,13 +83,13 @@ export default async function EmAlta() {
   }
 
   return (
-    <main className=" min-h-screen bg-brand-light text-white pb-20">
+    <main className="min-h-screen bg-brand-dark text-white pb-20">
       <div className="relative h-[85vh] min-h-[600px] w-full overflow-hidden">
-        <div className="absolute top-0 left-0 z-20 w-full p-6 md:p-8">
-          <div className="container mx-auto">
+        <div className="absolute top-0 left-0 z-20 w-full pt-6 md:pt-8">
+          <div className="container mx-auto px-4">
             <div className="inline-flex items-center gap-2 rounded-full bg-black/30 px-4 py-2 backdrop-blur-md border border-white/10">
               <TrendingUp className="h-5 w-5 text-brand-primary" />
-              <h1 className="font-semibold text-white/90">
+              <h1 className="text-xl font-semibold text-white/90">
                 Destinos em alta essa semana! 🔥
               </h1>
             </div>
@@ -106,58 +106,57 @@ export default async function EmAlta() {
 
         <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent" />
 
-        <div className="absolute bottom-0 left-0 flex h-full w-full flex-col justify-end p-8 md:p-16 lg:w-2/3">
-          <div className="space-y-6">
-            <p className="text-sm font-medium uppercase tracking-wider text-brand-primary/80">
-              {heroDestination.country}
-            </p>
+        <div className="absolute bottom-0 left-0 w-full pb-12 md:pb-16 z-10">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col justify-end max-w-3xl space-y-6">
+              <p className="text-sm font-medium uppercase tracking-wider text-brand-primary/80">
+                {heroDestination.country}
+              </p>
 
-            <h1 className="font-sans text-5xl font-extrabold uppercase tracking-tight md:text-7xl">
-              {heroDestination.city},
-              <br />
-              <span className="text-white/80">{heroDestination.country}</span>
-            </h1>
+              <h1 className="font-sans text-5xl font-extrabold uppercase tracking-tight md:text-7xl">
+                {heroDestination.city},
+                <br />
+                <span className="text-white/80">{heroDestination.country}</span>
+              </h1>
 
-            <p className="max-w-xl text-lg text-white/90 line-clamp-3 md:text-xl">
-              {heroDestination.description}
-            </p>
+              <p className="max-w-xl text-lg text-white/90 line-clamp-3 md:text-xl">
+                {heroDestination.description}
+              </p>
 
-            <div className="flex items-center gap-2 text-lg font-semibold">
-              <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-              <span>4.9</span>
-              <span className="text-sm font-normal text-white/70">
-                (8478 reviews)
-              </span>
-            </div>
+              <div className="flex items-center gap-2 text-lg font-semibold">
+                <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                <span>4.9</span>
+                <span className="text-sm font-normal text-white/70">
+                  (8478 reviews)
+                </span>
+              </div>
 
-            <div className="flex flex-wrap items-center gap-4 pt-4">
-              <Button
-                size="icon"
-                variant="secondary"
-                className="h-12 w-12 rounded-full bg-white/10 text-white hover:bg-white/20 backdrop-blur-md"
-              >
-                <Bookmark className="h-5 w-5" />
-              </Button>
-              <Link href={`/criar-roteiro?destino=${heroDestination.city}`}>
-                <Button className="h-12 rounded-full bg-brand-primary px-8 text-base font-bold text-white hover:bg-brand-dark shadow-lg hover:shadow-brand-primary/30 transition-all">
-                  <Plus className="mr-2 h-5 w-5" />
-                  Criar Roteiro
+              <div className="flex flex-wrap items-center gap-4 pt-4">
+                <Button
+                  size="icon"
+                  variant="secondary"
+                  className="h-12 w-12 rounded-full bg-white/10 text-white hover:bg-white/20 backdrop-blur-md"
+                >
+                  <Bookmark className="h-5 w-5" />
                 </Button>
-              </Link>
+                <Link href={`/criar-roteiro?destino=${heroDestination.city}`}>
+                  <Button className="h-12 rounded-full bg-brand-primary px-8 text-base font-bold text-white hover:bg-brand-dark shadow-lg hover:shadow-brand-primary/30 transition-all">
+                    <Plus className="mr-2 h-5 w-5" />
+                    Criar Roteiro
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {otherDestinations.length > 0 && (
-        <div className="container mx-auto px-4 py-12 -mt-20 relative z-20">
+        <div className="container mx-auto px-4 py-32 -mt-20 relative z-20">
           <div className="mb-6 flex items-end justify-between">
             <h3 className="text-2xl font-bold text-white">
               Continue explorando
             </h3>
-            <p className="text-sm text-white/50 hidden md:block">
-              Arraste para ver mais
-            </p>
           </div>
 
           <Carousel
