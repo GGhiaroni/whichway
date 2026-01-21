@@ -24,6 +24,49 @@ async function getFeaturedDestinations() {
   return destinations;
 }
 
+const renderPriceBadge = (price: string) => {
+  const safePrice = price ? price.trim() : "";
+
+  const baseClasses =
+    "backdrop-blur-md px-3 py-1.5 shadow-lg border text-white font-bold hover:scale-105 transition-transform cursor-default";
+
+  switch (safePrice) {
+    case "Alto":
+      return (
+        <Badge className={`${baseClasses} bg-amber-200 border-amber-100`}>
+          <span className="text-amber-700 flex font-bold items-center gap-1">
+            <span>💰💰💰</span>
+            <span className="text-base">alto</span>
+          </span>
+        </Badge>
+      );
+    case "Médio":
+      return (
+        <Badge className={`${baseClasses} bg-blue-200 border-blue-100`}>
+          <span className="text-blue-700 flex font-bold items-center gap-1">
+            <span>💰💰</span>
+            <span className="text-base">médio</span>
+          </span>
+        </Badge>
+      );
+    case "Baixo":
+      return (
+        <Badge className={`${baseClasses} bg-green-200 border-green-100`}>
+          <span className="text-green-700 flex font-bold items-center gap-1">
+            <span>💰</span>
+            <span className="text-base">baixo</span>
+          </span>
+        </Badge>
+      );
+    default:
+      return (
+        <Badge className={`${baseClasses} bg-gray-500/80 border-gray-400`}>
+          <span className="text-sm font-bold">sob consulta</span>
+        </Badge>
+      );
+  }
+};
+
 export default async function EmAlta() {
   const destinations = await getFeaturedDestinations();
 
@@ -143,13 +186,8 @@ export default async function EmAlta() {
 
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90" />
 
-                    <div className="absolute top-4 right-4 opacity-0 transition-opacity group-hover:opacity-100">
-                      <Badge
-                        variant="secondary"
-                        className="backdrop-blur-md bg-white/20 text-white border-0"
-                      >
-                        {place.priceLevel}
-                      </Badge>
+                    <div className="absolute top-4 right-4 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 translate-y-2 z-10">
+                      {renderPriceBadge(place.priceLevel)}
                     </div>
 
                     <div className="absolute bottom-0 left-0 w-full p-6">
