@@ -1,9 +1,7 @@
+import { prisma } from "@/lib/prisma";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { createApi } from "unsplash-js";
-
-const prisma = new PrismaClient();
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY || "");
 
