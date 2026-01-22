@@ -90,7 +90,7 @@ export default async function EmAlta() {
 
   return (
     <main>
-      <div className="relative h-[45vh] min-[390px]:h-[50vh] sm:h-[55vh] lg:h-[85vh] w-full overflow-hidden">
+      <div className="relative h-[45vh] min-[390px]:h-[50vh] sm:h-[55vh] lg:h-[70vh] w-full overflow-hidden">
         <Image
           src={heroDestination.imageUrl}
           alt={heroDestination.city}
@@ -99,9 +99,9 @@ export default async function EmAlta() {
           priority
         />
 
-        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
 
-        <div className="absolute top-0 left-0 w-full z-10 pt-6">
+        <div className="absolute top-0 left-0 w-full z-10 pt-6 md:pt-12">
           <div className="container mx-auto px-4 sm:px-8">
             <div className="inline-flex items-center rounded-full shadow-sm px-3 py-1 gap-2 bg-brand-dark ">
               <TrendingUp className="h-4 w-4 text-brand-cream" />
@@ -119,11 +119,17 @@ export default async function EmAlta() {
               {heroDestination.country}
             </h3>
 
+            <p className="hidden md:block mt-6 font-bold text-lg text-gray-200 max-w-xl leading-relaxed drop-shadow-md border-l-2 border-brand-primary pl-4">
+              {heroDestination.description}
+            </p>
+
             <div className="pt-6">
-              <Button className="bg-brand-dark font-bold uppercase font-sans text-sm">
-                <Sparkles />
-                Gerar roteiro
-              </Button>
+              <Link href={`/criar-roteiro?destino=${heroDestination.city}`}>
+                <Button className="h-14 px-8 bg-brand-dark hover:bg-brand-primary text-white font-bold uppercase font-sans text-sm rounded-full  shadow-[0_0_20px_rgba(0,0,0,0.3)]">
+                  <Sparkles className="mr-2 h-5 w-5" />
+                  Gerar roteiro agora
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
