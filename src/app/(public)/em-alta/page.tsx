@@ -4,6 +4,8 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
 } from "@/components/ui/carousel";
 import { prisma } from "@/lib/prisma";
 import { ArrowDown, Sparkles, TrendingUp } from "lucide-react";
@@ -25,19 +27,16 @@ async function getFeaturedDestinations() {
 const renderPriceBadge = (price: string) => {
   const safePrice = price ? price.trim() : "";
 
-  // Classes base ajustadas para mobile (texto menor)
   const baseClasses =
     "backdrop-blur-md px-2 py-1 md:px-3 md:py-1.5 shadow-lg border text-white font-bold hover:scale-105 transition-transform cursor-default select-none";
 
   switch (safePrice) {
     case "Alto":
       return (
-        <Badge
-          className={`${baseClasses} bg-amber-500/90 border-amber-300 hover:bg-amber-500`}
-        >
+        <Badge className={`${baseClasses} bg-amber-100 border-amber-300`}>
           <span className="flex items-center gap-1.5">
             <span className="text-sm md:text-lg">💰💰💰</span>
-            <span className="uppercase tracking-wide text-[10px] md:text-xs text-white">
+            <span className="uppercase tracking-wide font-bold text-[10px] md:text-xs text-amber-700">
               Alto
             </span>
           </span>
@@ -45,12 +44,10 @@ const renderPriceBadge = (price: string) => {
       );
     case "Médio":
       return (
-        <Badge
-          className={`${baseClasses} bg-blue-500/90 border-blue-300 hover:bg-blue-500`}
-        >
+        <Badge className={`${baseClasses} bg-blue-100 border-blue-300`}>
           <span className="flex items-center gap-1.5">
             <span className="text-sm md:text-lg">💰💰</span>
-            <span className="uppercase tracking-wide text-[10px] md:text-xs text-white">
+            <span className="uppercase tracking-wide font-bold text-[10px] md:text-xs text-blue-700">
               Médio
             </span>
           </span>
@@ -58,12 +55,10 @@ const renderPriceBadge = (price: string) => {
       );
     case "Baixo":
       return (
-        <Badge
-          className={`${baseClasses} bg-emerald-500/90 border-emerald-300 hover:bg-emerald-500`}
-        >
+        <Badge className={`${baseClasses} bg-green-100 border-green-300`}>
           <span className="flex items-center gap-1.5">
             <span className="text-sm md:text-lg">💰</span>
-            <span className="uppercase tracking-wide text-[10px] md:text-xs text-white">
+            <span className="uppercase tracking-wide font-bold text-[10px] md:text-xs text-green-700">
               Baixo
             </span>
           </span>
@@ -95,7 +90,7 @@ export default async function EmAlta() {
 
   return (
     <main>
-      <div className="relative h-[50vh] w-full overflow-hidden">
+      <div className="relative h-[45vh] min-[390px]:h-[50vh] sm:h-[55vh] lg:h-[85vh] w-full overflow-hidden">
         <Image
           src={heroDestination.imageUrl}
           alt={heroDestination.city}
@@ -107,7 +102,7 @@ export default async function EmAlta() {
         <div className="absolute inset-0 bg-black/40" />
 
         <div className="absolute top-0 left-0 w-full z-10 pt-6">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-4 sm:px-8">
             <div className="inline-flex items-center rounded-full shadow-sm px-3 py-1 gap-2 bg-brand-dark ">
               <TrendingUp className="h-4 w-4 text-brand-cream" />
               <h1 className="font-sans text-xs font-bold tracking-wider uppercase text-brand-cream">
@@ -116,11 +111,11 @@ export default async function EmAlta() {
             </div>
           </div>
 
-          <div className="flex flex-col px-4 mx-auto container pt-24">
-            <h2 className="text-5xl uppercase font-sans text-white font-bold">
+          <div className="flex flex-col px-4 sm:px-8 mx-auto container pt-14 min-[390px]:pt-40 sm:pt-36 md:pt-52">
+            <h2 className="text-4xl min-[390px]:text-5xl sm:text-7xl md:text-7xl uppercase font-sans text-white font-bold">
               {heroDestination.city},
             </h2>
-            <h3 className="text-5xl uppercase font-sans text-gray-400 font-bold">
+            <h3 className="text-2xl min-[390px]:text-3xl sm:text-5xl max-w-[220px] min-[390px]:max-w-[250px] md:max-w-[400px] uppercase font-sans text-gray-400 font-bold">
               {heroDestination.country}
             </h3>
 
@@ -134,13 +129,13 @@ export default async function EmAlta() {
         </div>
       </div>
 
-      <div className="mx-auto px-4 container pt-6 flex gap-2 items-center pb-8">
+      <div className="mx-auto px-4 sm:px-8 container pt-6 flex gap-2 items-center pb-8">
         <h2 className="text-2xl text-brand-dark font-bold">Confira também</h2>
         <ArrowDown className="text-brand-dark h-5 w-5 mt-1" />
       </div>
 
       {otherDestinations.length > 0 && (
-        <div className="container mx-auto pt-6 px-4 -mt-8 md:-mt-16 relative z-20">
+        <div className="container mx-auto pt-6 sm:pt-14 px-4 sm:px-12 md:px-16 -mt-8 md:-mt-16 relative z-20">
           <Carousel
             opts={{
               align: "start",
@@ -168,7 +163,7 @@ export default async function EmAlta() {
 
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-90" />
 
-                    <div className="absolute top-3 right-3 md:top-4 md:right-4 z-10">
+                    <div className="absolute top-3 right-3 md:top-4 md:right-4 z-10 opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0 translate-y-4">
                       {renderPriceBadge(place.priceLevel)}
                     </div>
 
@@ -184,6 +179,11 @@ export default async function EmAlta() {
                 </CarouselItem>
               ))}
             </CarouselContent>
+
+            <div className="hidden md:block">
+              <CarouselPrevious className="left-[-50px] bg-brand-dark text-white border-brand-primary hover:bg-brand-primary hover:text-white backdrop-blur-md" />
+              <CarouselNext className="right-[-50px] bg-brand-dark text-white border-brand-primary hover:bg-brand-primary hover:text-white backdrop-blur-md" />
+            </div>
           </Carousel>
         </div>
       )}
@@ -201,7 +201,7 @@ export default async function EmAlta() {
               WhichWay Insider
             </Badge>
 
-            <h2 className="font-sans text-3xl font-bold uppercase text-white md:text-5xl">
+            <h2 className="font-sans text-3xl font-bold uppercase text-white md:text-[2.5rem]">
               Não perca a próxima onda 🌊
             </h2>
 
