@@ -187,6 +187,47 @@ export default async function EmAlta() {
           </Carousel>
         </div>
       )}
+
+      <div className="container mx-auto px-4 py-10">
+        <div className="relative overflow-hidden rounded-3xl bg-brand-dark px-6 py-16 text-center shadow-2xl md:px-12 md:py-20">
+          <div className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 h-64 w-64 rounded-full bg-brand-primary/20 blur-3xl" />
+          <div className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 h-64 w-64 rounded-full bg-blue-500/10 blur-3xl" />
+
+          <div className="relative z-10 mx-auto max-w-2xl space-y-8">
+            <Badge
+              variant="outline"
+              className="border-white/20 text-white/80 uppercase tracking-widest"
+            >
+              WhichWay Insider
+            </Badge>
+
+            <h2 className="font-sans text-3xl font-bold uppercase text-white md:text-5xl">
+              Não perca a próxima onda 🌊
+            </h2>
+
+            <p className="text-lg text-white/70 leading-relaxed">
+              Nossa IA processa milhões de dados de viagem toda semana. Receba
+              os destinos tendência direto no seu e-mail, antes que os preços
+              subam.
+            </p>
+
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-center pt-4">
+              <input
+                type="email"
+                placeholder="Seu melhor e-mail"
+                className="h-12 w-full rounded-full border border-white/10 bg-white/5 px-6 text-white placeholder:text-white/40 focus:border-brand-primary focus:outline-none focus:ring-1 focus:ring-brand-primary sm:w-80 transition-all"
+              />
+              <Button className="h-12 rounded-full bg-brand-cream text-brand-dark hover:bg-white font-bold px-8 uppercase tracking-wide">
+                Quero receber
+              </Button>
+            </div>
+
+            <p className="text-xs text-white/30 pt-4">
+              Sem spam. Apenas viagens incríveis. Cancele quando quiser.
+            </p>
+          </div>
+        </div>
+      </div>
     </main>
   );
 }
