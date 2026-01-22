@@ -8,7 +8,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { prisma } from "@/lib/prisma";
-import { ArrowDown, Sparkles, TrendingUp } from "lucide-react";
+import { ArrowDown, TrendingUp } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -90,7 +90,7 @@ export default async function EmAlta() {
 
   return (
     <main>
-      <div className="relative h-[45vh] min-[390px]:h-[50vh] sm:h-[55vh] lg:h-[70vh] w-full overflow-hidden">
+      <div className="relative h-[45vh] min-[390px]:h-[50vh] sm:h-[55vh] min-[1000px]:h-[70vh] lg:h-[60vh] w-full overflow-hidden">
         <Image
           src={heroDestination.imageUrl}
           alt={heroDestination.city}
@@ -111,7 +111,7 @@ export default async function EmAlta() {
             </div>
           </div>
 
-          <div className="flex flex-col px-4 sm:px-8 mx-auto container pt-14 min-[390px]:pt-40 sm:pt-36 md:pt-52">
+          <div className="flex flex-col px-4 sm:px-8 mx-auto container pt-14 min-[390px]:pt-40 min-[400px]:pt-35 sm:pt-36 md:pt-38">
             <h2 className="text-4xl min-[390px]:text-5xl sm:text-7xl md:text-7xl uppercase font-sans text-white font-bold">
               {heroDestination.city},
             </h2>
@@ -119,15 +119,19 @@ export default async function EmAlta() {
               {heroDestination.country}
             </h3>
 
-            <p className="hidden md:block mt-6 font-bold text-lg text-gray-200 max-w-xl leading-relaxed drop-shadow-md border-l-2 border-brand-primary pl-4">
+            <p className="hidden min-[400px]:block md:block mt-6 mb-2 font-bold min-[400px]:text-sm md:text-lg text-gray-200 max-w-xl leading-relaxed drop-shadow-md border-l-2 border-brand-primary pl-4">
               {heroDestination.description}
             </p>
 
-            <div className="pt-6">
+            <div className="pt-4 flex gap-4">
               <Link href={`/criar-roteiro?destino=${heroDestination.city}`}>
-                <Button className="h-14 px-8 bg-brand-dark hover:bg-brand-primary text-white font-bold uppercase font-sans text-sm rounded-full  shadow-[0_0_20px_rgba(0,0,0,0.3)]">
-                  <Sparkles className="mr-2 h-5 w-5" />
-                  Gerar roteiro agora
+                <Button className="h-6 px-2 bg-brand-dark hover:bg-brand-primary text-white font-bold uppercase font-sans text-xs rounded-full  shadow-[0_0_20px_rgba(0,0,0,0.3)]">
+                  Gerar roteiro
+                </Button>
+              </Link>
+              <Link href={`/saiba-mais?destino=${heroDestination.city}`}>
+                <Button className="h-6 px-2 bg-brand-primary hover:bg-brand-light text-brand-cream font-bold uppercase font-sans text-xs rounded-full  shadow-[0_0_20px_rgba(0,0,0,0.3)]">
+                  Saiba mais
                 </Button>
               </Link>
             </div>
