@@ -17,14 +17,20 @@ export async function GET(request: Request) {
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
     const prompt = `
       Liste 10 destinos de viagem que estão em alta mundialmente nesta semana.
-      Retorne APENAS um JSON array puro, sem markdown, com este formato para cada item:
-      {
-        "city": "Nome da Cidade",
-        "country": "Nome do País",
-        "description": "Uma frase curta e inspiradora sobre por que visitar agora (max 100 caracteres)",
-        "priceLevel": "Baixo, Médio ou Alto",
-        "landmark": "Nome do ponto turístico mais famoso e icônico deste lugar em Inglês (ex: Eiffel Tower Paris)"
-      }
+      Retorne APENAS um JSON array puro, sem markdown, com este formato exato:
+      [
+        {
+          "city": "Nome da Cidade",
+          "country": "Nome do País",
+          "description": "Descrição inspiradora (max 150 chars)",
+          "priceLevel": "Baixo, Médio ou Alto",
+          "landmark": "Nome do ponto turístico icônico em Inglês (para busca de fotos)",
+          "climate": "Resumo curto do clima (ex: Tropical ameno)",
+          "bestTime": "Melhor época para ir (ex: Maio a Setembro)",
+          "avgPrice": "Custo médio diário estimado em USD (ex: $120/dia)",
+          "highlights": "3 palavras-chave do que fazer (ex: História, Gastronomia, Praias)"
+        }
+      ]
       `;
 
     const result = await model.generateContent(prompt);
@@ -59,6 +65,10 @@ export async function GET(request: Request) {
           description: dest.description,
           priceLevel: dest.priceLevel,
           imageUrl: fallbackImage,
+          climate: dest.climate,
+          bestTime: dest.bestTime,
+          avgPrice: dest.avgPrice,
+          highlights: dest.highlights,
         },
       });
     }

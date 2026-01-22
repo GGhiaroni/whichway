@@ -16,5 +16,9 @@ model FeaturedDestination {
   description String   
   imageUrl    String   
   priceLevel  String   
-  createdAt   DateTime @default(now()) 
+  createdAt   DateTime @default(now())
+  climate     String   
+  bestTime    String   
+  avgPrice    String   
+  highlights  String
 }
