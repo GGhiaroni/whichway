@@ -90,7 +90,7 @@ export default async function EmAlta() {
 
   return (
     <main>
-      <div className="relative h-[45vh] min-[390px]:h-[50vh] sm:h-[55vh] min-[1000px]:h-[70vh] lg:h-[60vh] w-full overflow-hidden">
+      <div className="relative h-[45vh] min-[390px]:h-[50vh] sm:h-[55vh] min-[1000px]:h-[75vh] lg:h-[70vh] w-full overflow-hidden">
         <Image
           src={heroDestination.imageUrl}
           alt={heroDestination.city}
@@ -125,12 +125,12 @@ export default async function EmAlta() {
 
             <div className="pt-4 flex gap-4">
               <Link href={`/criar-roteiro?destino=${heroDestination.city}`}>
-                <Button className="h-6 px-2 bg-brand-dark hover:bg-brand-primary text-white font-bold uppercase font-sans text-xs rounded-full  shadow-[0_0_20px_rgba(0,0,0,0.3)]">
+                <Button className="h-6 p-4 bg-brand-dark hover:bg-brand-primary text-white font-bold uppercase font-sans text-xs rounded-full  shadow-[0_0_20px_rgba(0,0,0,0.3)]">
                   Gerar roteiro
                 </Button>
               </Link>
               <Link href={`/saiba-mais?destino=${heroDestination.city}`}>
-                <Button className="h-6 px-2 bg-brand-primary hover:bg-brand-light text-brand-cream font-bold uppercase font-sans text-xs rounded-full  shadow-[0_0_20px_rgba(0,0,0,0.3)]">
+                <Button className="h-6 p-4 bg-brand-primary hover:bg-brand-light text-brand-cream font-bold uppercase font-sans text-xs rounded-full  shadow-[0_0_20px_rgba(0,0,0,0.3)]">
                   Saiba mais
                 </Button>
               </Link>
@@ -161,8 +161,10 @@ export default async function EmAlta() {
                 >
                   <Link
                     href={`/criar-roteiro?destino=${place.city}`}
-                    className="group relative block aspect-[3/4] w-full overflow-hidden rounded-xl md:rounded-2xl bg-slate-900 shadow-xl border-2 border-brand-dark transition-all active:scale-95 md:hover:-translate-y-2 md:hover:shadow-2xl"
+                    className="group relative block aspect-[3/4] w-full overflow-hidden rounded-xl md:rounded-2xl bg-slate-900 shadow-xl transition-all active:scale-95 md:hover:-translate-y-2 md:hover:shadow-2xl [mask-image:linear-gradient(white,white)]"
                   >
+                    <div className="absolute inset-0 z-20 rounded-xl md:rounded-2xl border-2 border-brand-dark pointer-events-none" />
+
                     <Image
                       src={place.imageUrl}
                       alt={place.city}
