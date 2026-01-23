@@ -20,6 +20,9 @@ async function getFeaturedDestinations() {
       createdAt: "desc",
     },
     take: 10,
+    include: {
+      highlights: true,
+    },
   });
   return destinations;
 }

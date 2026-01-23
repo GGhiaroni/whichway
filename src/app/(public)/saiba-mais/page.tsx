@@ -29,7 +29,11 @@ export default async function SaibaMais(props: PageProps) {
 
   const targetCity = normalizeString(decodeURIComponent(rawDestiny));
 
-  const allDestinations = await prisma.featuredDestination.findMany();
+  const allDestinations = await prisma.featuredDestination.findMany({
+    include: {
+      highlights: true,
+    },
+  });
 
   const destination = allDestinations.find(
     (d) => normalizeString(d.city) === targetCity,
@@ -103,19 +107,43 @@ export default async function SaibaMais(props: PageProps) {
           <p className="text-lg text-brand-cream">{destination.description}</p>
         </div>
 
-        <div className="mt-6">
-          <h2 className="text-brand-primary text-xl mb-4">✨ Highlights</h2>
-          {destination.highlights ? (
-            destination.highlights.split(",").map((h, index) => (
-              <span
-                key={index}
-                className="px-4 py-2 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-brand-dark font-medium text-sm capitalize"
-              >
-                {h.trim()}
-              </span>
-            ))
+        <div className="mt-12 mb-20">
+          <h2 className="text-brand-dark font-bold text-2xl mb-6 flex items-center gap-2">
+            ✨ Highlights Imperdíveis
+          </h2>
+
+          {destination.highlights && destination.highlights.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {destination.highlights.map((highlight) => (
+                <div
+                  key={highlight.id}
+                  className="group relative h-64 w-full overflow-hidden rounded-2xl shadow-lg transition-all hover:shadow-2xl"
+                >
+                  <Image
+                    src={highlight.imageUrl}
+                    alt={highlight.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90" />
+
+                  <div className="absolute bottom-0 left-0 w-full p-6 translate-y-2 transition-transform duration-300 group-hover:translate-y-0">
+                    <div className="h-1 w-10 bg-brand-primary mb-3 rounded-full" />
+                    <p className="text-white font-bold text-xl leading-tight drop-shadow-md">
+                      {highlight.title}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           ) : (
-            <p className="text-gray-500 text-sm">Nenhum destaque informado.</p>
+            <div className="rounded-xl bg-gray-50 p-6 border border-gray-100 text-center">
+              <p className="text-gray-500">
+                Os destaques visuais deste destino estão sendo carregados.
+              </p>
+            </div>
           )}
         </div>
       </div>
