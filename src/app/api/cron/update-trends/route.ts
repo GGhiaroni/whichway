@@ -18,6 +18,7 @@ interface DestinationInput {
   bestTime: string;
   avgPrice: string;
   highlights: HighlightInput[];
+  tips: string[];
 }
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY || "");
@@ -49,9 +50,17 @@ export async function GET(request: Request) {
              { "title": "Torre Eiffel", "imageQuery": "Eiffel Tower detail" },
              { "title": "Museu do Louvre", "imageQuery": "Louvre pyramid night" },
              { "title": "Montmartre", "imageQuery": "Montmartre streets paris" }
+          ],
+          "tips": [
+            "Dica 1: Evite golpes comuns na região...",
+            "Dica 2: Melhor meio de transporte é...",
+            "Dica 3: Não deixe de provar tal prato...",
+            "Dica 4: Regras de etiqueta local...",
+            "Dica 5: Leve dinheiro em espécie para..."
           ]
         }
       ]
+        Certifique-se de incluir no mínimo 5 "Dicas de Ouro" (Golden Tips) essenciais e práticas para cada destino no array "tips".
       `;
 
     const result = await model.generateContent(prompt);
@@ -115,6 +124,11 @@ export async function GET(request: Request) {
           avgPrice: dest.avgPrice,
           highlights: {
             create: highlightsWithImages,
+          },
+          tips: {
+            create: dest.tips.map((tipString) => ({
+              text: tipString,
+            })),
           },
         },
       });
