@@ -150,30 +150,43 @@ export default async function SaibaMais(props: PageProps) {
           )}
         </div>
 
-        <div className="bg-brand-primary rounded-3xl px-6 py-6 shadow-2xl">
-          <h2 className="text-brand-cream font-bold text-2xl mb-6">💡 Dicas</h2>
-          {destination.tips && destination.tips.length > 0 && (
-            <div className="mt-12 mb-20 bg-[#FDF8F3] border border-brand-primary/10 rounded-3xl p-8 shadow-sm">
-              <h2 className="text-brand-dark font-bold text-2xl mb-6 flex items-center gap-3">
-                💡 Dicas de Ouro (Travel Tips)
-              </h2>
+        {destination.tips && destination.tips.length > 0 ? (
+          <div className="mt-12 mb-20 bg-[#FDF8F3] border border-brand-primary/10 rounded-3xl p-8 shadow-sm">
+            <h2 className="text-brand-dark font-bold text-2xl mb-6 flex items-center gap-3">
+              💡 Dicas
+            </h2>
 
-              <div className="grid gap-4">
-                {destination.tips.map((tip) => (
-                  <div key={tip.id} className="flex items-start gap-3">
-                    <div className="mt-1 min-w-[24px] h-6 w-6 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
-                      <Check className="h-4 w-4" />
-                    </div>
-
-                    <p className="text-gray-700 text-lg leading-relaxed">
-                      {tip.text}
-                    </p>
+            <div className="grid gap-4">
+              {destination.tips.map((tip) => (
+                <div key={tip.id} className="flex items-start gap-3">
+                  <div className="mt-1 min-w-[24px] h-6 w-6 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
+                    <Check className="h-4 w-4" />
                   </div>
-                ))}
-              </div>
+
+                  <p className="text-gray-700 text-lg leading-relaxed">
+                    {tip.text.includes(":") ? (
+                      <>
+                        <strong className="font-bold text-brand-dark block sm:inline">
+                          {tip.text.split(":")[0]}:
+                        </strong>
+
+                        <span className="ml-1">
+                          {tip.text.split(":").slice(1).join(":")}
+                        </span>
+                      </>
+                    ) : (
+                      tip.text
+                    )}
+                  </p>
+                </div>
+              ))}
             </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="mt-12 mb-20 p-6 text-center text-gray-500 bg-gray-50 rounded-2xl">
+            <p>Carregando dicas de viagem...</p>
+          </div>
+        )}
       </div>
     </main>
   );
