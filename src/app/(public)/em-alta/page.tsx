@@ -163,7 +163,7 @@ export default async function EmAlta() {
                   className="pl-3 md:pl-4 basis-[70%] sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
                 >
                   <Link
-                    href={`/criar-roteiro?destino=${place.city}`}
+                    href={`/saiba-mais?destino=${place.city}`}
                     className="group relative block aspect-[3/4] w-full overflow-hidden rounded-xl md:rounded-2xl bg-slate-900 shadow-xl transition-all active:scale-95 md:hover:-translate-y-2 md:hover:shadow-2xl [mask-image:linear-gradient(white,white)]"
                   >
                     <div className="absolute inset-0 z-20 rounded-xl md:rounded-2xl border-2 border-brand-dark pointer-events-none" />
