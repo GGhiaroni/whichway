@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
-import { MapPin } from "lucide-react";
+import { Check, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -32,6 +32,7 @@ export default async function SaibaMais(props: PageProps) {
   const allDestinations = await prisma.featuredDestination.findMany({
     include: {
       highlights: true,
+      tips: true,
     },
   });
 
@@ -101,14 +102,16 @@ export default async function SaibaMais(props: PageProps) {
       </div>
 
       <div className="container mx-auto px-4 mt-4">
-        <h3 className="text-2xl text-brand-dark">Sobre esse destino</h3>
+        <h3 className="text-2xl text-brand-dark font-bold">
+          Sobre esse destino
+        </h3>
 
         <div className="rounded-3xl bg-brand-dark px-6 py-6 mt-4 shadow-2xl">
           <p className="text-lg text-brand-cream">{destination.description}</p>
         </div>
 
-        <div className="mt-12 mb-20">
-          <h2 className="text-brand-dark font-bold text-2xl mb-6 flex items-center gap-2">
+        <div className="mt-12 mb-12">
+          <h2 className="text-brand-dark font-bold text-2xl mb-6">
             ✨ Highlights
           </h2>
 
@@ -143,6 +146,31 @@ export default async function SaibaMais(props: PageProps) {
               <p className="text-gray-500">
                 Os destaques visuais deste destino estão sendo carregados.
               </p>
+            </div>
+          )}
+        </div>
+
+        <div className="bg-brand-primary rounded-3xl px-6 py-6 shadow-2xl">
+          <h2 className="text-brand-cream font-bold text-2xl mb-6">💡 Dicas</h2>
+          {destination.tips && destination.tips.length > 0 && (
+            <div className="mt-12 mb-20 bg-[#FDF8F3] border border-brand-primary/10 rounded-3xl p-8 shadow-sm">
+              <h2 className="text-brand-dark font-bold text-2xl mb-6 flex items-center gap-3">
+                💡 Dicas de Ouro (Travel Tips)
+              </h2>
+
+              <div className="grid gap-4">
+                {destination.tips.map((tip) => (
+                  <div key={tip.id} className="flex items-start gap-3">
+                    <div className="mt-1 min-w-[24px] h-6 w-6 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
+                      <Check className="h-4 w-4" />
+                    </div>
+
+                    <p className="text-gray-700 text-lg leading-relaxed">
+                      {tip.text}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
