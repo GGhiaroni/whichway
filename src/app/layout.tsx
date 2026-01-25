@@ -1,4 +1,6 @@
 import { Toaster } from "@/components/ui/sonner";
+import { ptBR } from "@clerk/localizations";
+import { ClerkProvider } from "@clerk/nextjs";
 import { Baskervville } from "next/font/google";
 import "./globals.css";
 
@@ -15,11 +17,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-br">
-      <body className={`${baskervville.variable} font-serif antialiased`}>
-        {children}
-        <Toaster />
-      </body>
-    </html>
+    <ClerkProvider localization={ptBR}>
+      <html lang="pt-br">
+        <body className={`${baskervville.variable} font-serif antialiased`}>
+          {children}
+          <Toaster />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
