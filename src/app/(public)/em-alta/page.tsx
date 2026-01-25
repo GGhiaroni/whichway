@@ -114,7 +114,7 @@ export default async function EmAlta() {
             </div>
           </div>
 
-          <div className="flex flex-col px-4 sm:px-8 mx-auto container pt-14 min-[390px]:pt-40 min-[400px]:pt-35 sm:pt-36 md:pt-38">
+          <div className="flex flex-col px-4 sm:px-8 mx-auto container pt-14 min-[390px]:pt-32 min-[400px]:pt-22 sm:pt-36 md:pt-38">
             <h2 className="text-4xl min-[390px]:text-5xl sm:text-7xl md:text-7xl uppercase font-sans text-white font-bold">
               {heroDestination.city},
             </h2>

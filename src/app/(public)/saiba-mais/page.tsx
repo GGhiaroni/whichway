@@ -2,12 +2,16 @@ import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
 import {
   ArrowLeft,
-  Calendar,
   Check,
-  CloudSun,
+  CloudRain,
+  Leaf,
   Lightbulb,
   MapPin,
+  Plane,
   Sparkles,
+  Sun,
+  Thermometer,
+  Users,
   Wallet,
 } from "lucide-react";
 import Image from "next/image";
@@ -197,45 +201,171 @@ export default async function SaibaMais(props: PageProps) {
           </div>
         )}
 
-        <div className="mt-8 mb-8 grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="flex items-start gap-4 rounded-2xl bg-orange-50 border border-orange-100 p-5 shadow-sm transition-all hover:shadow-md hover:scale-[1.02]">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-orange-100 text-orange-600">
-              <Calendar className="h-6 w-6" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+          <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
+            <div className="flex items-center gap-3 mb-6">
+              <Sun className="h-6 w-6 text-orange-500" />
+              <h3 className="font-bold text-xl text-gray-800">Clima & Tempo</h3>
             </div>
-            <div className="flex flex-col gap-1">
-              <p className="text-base font-bold uppercase tracking-wider text-orange-600/80">
-                Melhor Época
-              </p>
-              <p className="text-base text-gray-800 leading-tight">
-                {destination.bestTime}
-              </p>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-gray-50 rounded-2xl p-4 flex flex-col items-center text-center">
+                <Thermometer className="h-5 w-5 text-red-400 mb-2" />
+                <span className="text-2xl font-bold text-gray-800">
+                  {destination.tempSummer}
+                </span>
+                <span className="text-xs text-gray-500 uppercase tracking-wide">
+                  Verão
+                </span>
+              </div>
+
+              <div className="bg-gray-50 rounded-2xl p-4 flex flex-col items-center text-center">
+                <Thermometer className="h-5 w-5 text-blue-400 mb-2" />
+                <span className="text-2xl font-bold text-gray-800">
+                  {destination.tempWinter}
+                </span>
+                <span className="text-xs text-gray-500 uppercase tracking-wide">
+                  Inverno
+                </span>
+              </div>
+
+              <div className="bg-orange-50/50 rounded-2xl p-4 flex flex-col items-center text-center">
+                <Sun className="h-5 w-5 text-orange-400 mb-2" />
+                <span className="text-2xl font-bold text-gray-800">
+                  {destination.sunnyDays}
+                </span>
+                <span className="text-xs text-gray-500 uppercase tracking-wide">
+                  Dias de Sol
+                </span>
+              </div>
+
+              <div className="bg-blue-50/50 rounded-2xl p-4 flex flex-col items-center text-center">
+                <CloudRain className="h-5 w-5 text-blue-400 mb-2" />
+                <span className="text-2xl font-bold text-gray-800">
+                  {destination.rainyDays}
+                </span>
+                <span className="text-xs text-gray-500 uppercase tracking-wide">
+                  Dias de Chuva
+                </span>
+              </div>
             </div>
           </div>
 
-          <div className="flex items-start gap-4 rounded-2xl bg-blue-50 border border-blue-100 p-5 shadow-sm transition-all hover:shadow-md hover:scale-[1.02]">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-600">
-              <CloudSun className="h-6 w-6" />
+          <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-3 mb-6">
+                <Wallet className="h-6 w-6 text-emerald-600" />
+                <h3 className="font-bold text-xl text-gray-800">
+                  Custo Médio Diário
+                </h3>
+              </div>
+              <p className="text-sm text-gray-500 mb-6">
+                Estimativa por pessoa (Hospedagem + Alimentação)
+              </p>
+
+              <div className="space-y-6">
+                <div>
+                  <div className="flex justify-between text-sm mb-2">
+                    <span className="font-bold text-gray-700">Econômico</span>
+                    <span className="font-bold text-gray-900">
+                      {destination.costBudget}
+                    </span>
+                  </div>
+                  <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-emerald-500 w-[30%] rounded-full" />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex justify-between text-sm mb-2">
+                    <span className="font-bold text-gray-700">Conforto</span>
+                    <span className="font-bold text-gray-900">
+                      {destination.costMid}
+                    </span>
+                  </div>
+                  <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-orange-400 w-[60%] rounded-full" />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex justify-between text-sm mb-2">
+                    <span className="font-bold text-gray-700">Luxo</span>
+                    <span className="font-bold text-gray-900">
+                      {destination.costLuxury}
+                    </span>
+                  </div>
+                  <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-gray-800 w-[95%] rounded-full" />
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="flex flex-col gap-1">
-              <p className="text-base font-bold uppercase tracking-wider text-blue-600/80">
-                Clima
-              </p>
-              <p className="text-base text-gray-800 leading-tight">
-                {destination.climate}
-              </p>
+
+            <div className="mt-8 pt-6 border-t border-gray-100 flex items-center justify-between bg-gray-50 p-4 rounded-2xl">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-emerald-100 rounded-full text-emerald-700">
+                  <Plane className="h-5 w-5" />
+                </div>
+                <span className="text-sm font-bold text-gray-600">
+                  Voo Médio (BR)
+                </span>
+              </div>
+              <span className="text-lg font-black text-gray-900">
+                {destination.costFlight}
+              </span>
             </div>
           </div>
+        </div>
 
-          <div className="flex items-start gap-4 rounded-2xl bg-emerald-50 border border-emerald-100 p-5 shadow-sm transition-all hover:shadow-md hover:scale-[1.02]">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
-              <Wallet className="h-6 w-6" />
-            </div>
-            <div className="flex flex-col gap-1">
-              <p className="text-base font-bold uppercase tracking-wider text-emerald-600/80">
-                Custo Médio
+        <div className="mt-12">
+          <h2 className="text-brand-dark font-bold text-2xl mb-6">
+            🗓️ Quando ir?
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-[#E6F4F1] p-6 rounded-3xl border border-emerald-100/50">
+              <div className="flex items-center gap-2 mb-3">
+                <Sparkles className="h-5 w-5 text-emerald-700" />
+                <span className="px-3 py-1 bg-emerald-600 text-white text-[10px] font-bold uppercase tracking-wider rounded-full">
+                  Melhor Custo-Benefício
+                </span>
+              </div>
+              <h4 className="text-lg font-bold text-gray-800 mb-1">
+                {destination.bestTimeValue}
+              </h4>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                {destination.bestTimeDesc}
               </p>
-              <p className="font-sans text-base text-gray-800 leading-tight">
-                {destination.avgPrice}
+            </div>
+
+            <div className="bg-[#FFF4EB] p-6 rounded-3xl border border-orange-100/50">
+              <div className="flex items-center gap-2 mb-3">
+                <Users className="h-5 w-5 text-orange-700" />
+                <span className="px-3 py-1 bg-[#F2E3D5] text-orange-900 text-[10px] font-bold uppercase tracking-wider rounded-full">
+                  Alta Temporada
+                </span>
+              </div>
+              <h4 className="text-lg font-bold text-gray-800 mb-1">
+                {destination.peakSeasonValue}
+              </h4>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                {destination.peakSeasonDesc}
+              </p>
+            </div>
+
+            <div className="bg-[#F7F7F5] p-6 rounded-3xl border border-gray-200/50">
+              <div className="flex items-center gap-2 mb-3">
+                <Leaf className="h-5 w-5 text-gray-500" />
+                <span className="px-3 py-1 bg-white border border-gray-200 text-gray-600 text-[10px] font-bold uppercase tracking-wider rounded-full">
+                  Baixa Temporada
+                </span>
+              </div>
+              <h4 className="text-lg font-bold text-gray-800 mb-1">
+                {destination.offSeasonValue}
+              </h4>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                {destination.offSeasonDesc}
               </p>
             </div>
           </div>
