@@ -14,9 +14,22 @@ interface DestinationInput {
   description: string;
   priceLevel: string;
   landmark: string;
-  climate: string;
-  bestTime: string;
-  avgPrice: string;
+  rating: string;
+  reviews: string;
+  tempSummer: string;
+  tempWinter: string;
+  sunnyDays: string;
+  rainyDays: string;
+  costBudget: string;
+  costMid: string;
+  costLuxury: string;
+  costFlight: string;
+  bestTimeValue: string;
+  bestTimeDesc: string;
+  peakSeasonValue: string;
+  peakSeasonDesc: string;
+  offSeasonValue: string;
+  offSeasonDesc: string;
   highlights: HighlightInput[];
   tips: string[];
 }
@@ -42,15 +55,34 @@ export async function GET(request: Request) {
           "country": "Nome do País",
           "description": "Descrição inspiradora (250 chars)",
           "priceLevel": "Baixo, Médio ou Alto",
-          "landmark": "Nome do ponto turístico icônico em Inglês (para busca de fotos)",
-          "climate": "Resumo curto do clima (ex: Tropical ameno)",
-          "bestTime": "Melhor época para ir (ex: Maio a Setembro)",
-          "avgPrice": "Custo médio diário estimado em USD (ex: $120/dia)",
+          "landmark": "Nome do ponto turístico icônico em Inglês (para busca de fotos). PRECISA SER O PONTO MAIS FAMOSO DO LUGAR, QUE NÃO SE CONFUNDA COM NENHUM OUTRO NO MUNDO.",
+
+          "rating": "Nota média (ex: 4.8)",
+          "reviews": "Volume de reviews (ex: 12k+ reviews)",
+
+          "tempSummer": "Temp média verão (ex: 28°C)",
+          "tempWinter": "Temp média inverno (ex: 12°C)",
+          "sunnyDays": "Dias de sol/ano (ex: 300)",
+          "rainyDays": "Dias de chuva/ano (ex: 45)",
+
+          "costBudget": "Custo diário mochileiro em USD ou EUR (ex: €50-80)",
+          "costMid": "Custo diário conforto em USD ou EUR (ex: €150-250)",
+          "costLuxury": "Custo diário luxo em USD ou EUR (ex: €500+)",
+          "costFlight": "Preço médio voo saindo do Brasil em BRL (ex: R$ 5.200)",
+
+          "bestTimeValue": "Melhores meses (ex: Abril - Maio)",
+          "bestTimeDesc": "Por que ir nessa época (ex: Clima ameno e preços bons)",
+          "peakSeasonValue": "Alta temporada (ex: Julho - Agosto)",
+          "peakSeasonDesc": "O que esperar (ex: Lotado, calor, tudo aberto)",
+          "offSeasonValue": "Baixa temporada (ex: Nov - Mar)",
+          "offSeasonDesc": "O que esperar (ex: Frio, chuva, mas barato)",
+
           "highlights": [
              { "title": "Torre Eiffel", "imageQuery": "Eiffel Tower detail" },
              { "title": "Museu do Louvre", "imageQuery": "Louvre pyramid night" },
              { "title": "Montmartre", "imageQuery": "Montmartre streets paris" }
           ],
+
           "tips": [
             "Dica 1: Evite golpes comuns na região...",
             "Dica 2: Melhor meio de transporte é...",
@@ -119,9 +151,22 @@ export async function GET(request: Request) {
           description: dest.description,
           priceLevel: dest.priceLevel,
           imageUrl: fallbackImage,
-          climate: dest.climate,
-          bestTime: dest.bestTime,
-          avgPrice: dest.avgPrice,
+          rating: dest.rating,
+          reviews: dest.reviews,
+          tempSummer: dest.tempSummer,
+          tempWinter: dest.tempWinter,
+          sunnyDays: dest.sunnyDays,
+          rainyDays: dest.rainyDays,
+          costBudget: dest.costBudget,
+          costMid: dest.costMid,
+          costLuxury: dest.costLuxury,
+          costFlight: dest.costFlight,
+          bestTimeValue: dest.bestTimeValue,
+          bestTimeDesc: dest.bestTimeDesc,
+          peakSeasonValue: dest.peakSeasonValue,
+          peakSeasonDesc: dest.peakSeasonDesc,
+          offSeasonValue: dest.offSeasonValue,
+          offSeasonDesc: dest.offSeasonDesc,
           highlights: {
             create: highlightsWithImages,
           },

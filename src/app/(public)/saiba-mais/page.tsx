@@ -62,7 +62,7 @@ export default async function SaibaMais(props: PageProps) {
 
   return (
     <main>
-      <div className="relative h-[55vh] min-[390px]:h-[50vh] sm:h-[55vh] min-[1000px]:h-[75vh] lg:h-[70vh] w-full overflow-hidden">
+      <div className="relative h-[55svh] md:h-[65vh] lg:h-[70vh] w-full overflow-hidden">
         <Image
           src={destination.imageUrl}
           alt={destination.city}
@@ -73,7 +73,7 @@ export default async function SaibaMais(props: PageProps) {
 
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
 
-        <div className="absolute top-0 left-0 w-full z-10 pt-18 md:pt-12">
+        <div className="absolute top-0 left-0 w-full z-10 pt-18 min-[390px]:pt-4 md:pt-12">
           <div className="container mx-auto pt-4 px-4 sm:px-8">
             <div className="inline-flex items-center rounded-full shadow-sm px-3 py-1 gap-2 bg-brand-dark ">
               <h1 className="font-sans text-xs font-bold tracking-wider uppercase text-brand-cream">
@@ -110,7 +110,7 @@ export default async function SaibaMais(props: PageProps) {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 mt-4">
+      <div className="mt-8 container mx-auto px-4 mt-4">
         <h3 className="text-2xl text-brand-dark font-bold">
           Sobre esse destino
         </h3>

@@ -17,10 +17,23 @@ model FeaturedDestination {
   imageUrl    String   
   priceLevel  String   
   createdAt   DateTime @default(now())
-  climate     String   
-  bestTime    String   
-  avgPrice    String   
- highlights  Highlight[]
+  rating      String  
+  reviews     String
+  tempSummer  String   
+  tempWinter  String   
+  sunnyDays   String   
+  rainyDays   String   
+  costBudget  String   
+  costMid     String   
+  costLuxury  String   
+  costFlight  String   
+  bestTimeValue String  
+  bestTimeDesc  String  
+  peakSeasonValue String 
+  peakSeasonDesc String 
+  offSeasonValue String 
+  offSeasonDesc String 
+   highlights  Highlight[]
   tips Tip[]
 }
 
