@@ -109,7 +109,7 @@ export default async function SaibaMais(props: PageProps) {
 
         <div className="mt-12 mb-20">
           <h2 className="text-brand-dark font-bold text-2xl mb-6 flex items-center gap-2">
-            ✨ Highlights Imperdíveis
+            ✨ Highlights
           </h2>
 
           {destination.highlights && destination.highlights.length > 0 ? (

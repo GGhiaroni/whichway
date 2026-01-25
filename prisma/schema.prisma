@@ -21,12 +21,20 @@ model FeaturedDestination {
   bestTime    String   
   avgPrice    String   
  highlights  Highlight[]
+  tips Tip[]
 }
 
 model Highlight {
   id                    String @id @default(uuid())
   title                 String 
   imageUrl              String 
+  featuredDestinationId String
+  featuredDestination   FeaturedDestination @relation(fields: [featuredDestinationId], references: [id], onDelete: Cascade)
+}
+
+model Tip {
+  id String @id @default(uuid())
+  text String
   featuredDestinationId String
   featuredDestination   FeaturedDestination @relation(fields: [featuredDestinationId], references: [id], onDelete: Cascade)
 }
