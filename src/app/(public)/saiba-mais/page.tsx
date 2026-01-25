@@ -1,6 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
-import { Check, MapPin } from "lucide-react";
+import {
+  ArrowLeft,
+  Calendar,
+  Check,
+  CloudSun,
+  Lightbulb,
+  MapPin,
+  Sparkles,
+  Wallet,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -64,7 +73,7 @@ export default async function SaibaMais(props: PageProps) {
 
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
 
-        <div className="absolute top-0 left-0 w-full z-10 pt-40 md:pt-12">
+        <div className="absolute top-0 left-0 w-full z-10 pt-18 md:pt-12">
           <div className="container mx-auto pt-4 px-4 sm:px-8">
             <div className="inline-flex items-center rounded-full shadow-sm px-3 py-1 gap-2 bg-brand-dark ">
               <h1 className="font-sans text-xs font-bold tracking-wider uppercase text-brand-cream">
@@ -110,7 +119,7 @@ export default async function SaibaMais(props: PageProps) {
           <p className="text-lg text-brand-cream">{destination.description}</p>
         </div>
 
-        <div className="mt-12 mb-12">
+        <div className="mt-8">
           <h2 className="text-brand-dark font-bold text-2xl mb-6">
             ✨ Highlights
           </h2>
@@ -151,9 +160,9 @@ export default async function SaibaMais(props: PageProps) {
         </div>
 
         {destination.tips && destination.tips.length > 0 ? (
-          <div className="mt-12 mb-20 bg-[#FDF8F3] border border-brand-primary/10 rounded-3xl p-8 shadow-sm">
+          <div className="mt-8 bg-[#FDF8F3] border border-brand-primary/10 rounded-3xl p-8 shadow-sm">
             <h2 className="text-brand-dark font-bold text-2xl mb-6 flex items-center gap-3">
-              💡 Dicas
+              <Lightbulb className="h-6 w-6 text-amber-300" /> Dicas
             </h2>
 
             <div className="grid gap-4">
@@ -187,6 +196,98 @@ export default async function SaibaMais(props: PageProps) {
             <p>Carregando dicas de viagem...</p>
           </div>
         )}
+
+        <div className="mt-8 mb-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="flex items-start gap-4 rounded-2xl bg-orange-50 border border-orange-100 p-5 shadow-sm transition-all hover:shadow-md hover:scale-[1.02]">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-orange-100 text-orange-600">
+              <Calendar className="h-6 w-6" />
+            </div>
+            <div className="flex flex-col gap-1">
+              <p className="text-base font-bold uppercase tracking-wider text-orange-600/80">
+                Melhor Época
+              </p>
+              <p className="text-base text-gray-800 leading-tight">
+                {destination.bestTime}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-4 rounded-2xl bg-blue-50 border border-blue-100 p-5 shadow-sm transition-all hover:shadow-md hover:scale-[1.02]">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+              <CloudSun className="h-6 w-6" />
+            </div>
+            <div className="flex flex-col gap-1">
+              <p className="text-base font-bold uppercase tracking-wider text-blue-600/80">
+                Clima
+              </p>
+              <p className="text-base text-gray-800 leading-tight">
+                {destination.climate}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-4 rounded-2xl bg-emerald-50 border border-emerald-100 p-5 shadow-sm transition-all hover:shadow-md hover:scale-[1.02]">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+              <Wallet className="h-6 w-6" />
+            </div>
+            <div className="flex flex-col gap-1">
+              <p className="text-base font-bold uppercase tracking-wider text-emerald-600/80">
+                Custo Médio
+              </p>
+              <p className="font-sans text-base text-gray-800 leading-tight">
+                {destination.avgPrice}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="my-12">
+          <div className="relative overflow-hidden rounded-3xl bg-brand-dark px-6 py-12 md:px-12 md:py-16 text-center shadow-2xl">
+            <div className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 h-64 w-64 rounded-full bg-brand-primary/20 blur-3xl pointer-events-none" />
+            <div className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 h-64 w-64 rounded-full bg-blue-500/10 blur-3xl pointer-events-none" />
+
+            <div className="relative z-10 mx-auto max-w-3xl">
+              <h2 className="font-sans text-3xl font-bold uppercase text-white md:text-5xl mb-6 leading-tight">
+                E aí, bora para{" "}
+                <span className="text-brand-cream border-b-4 border-brand-light">
+                  {destination.city}
+                </span>
+                ?
+              </h2>
+
+              <p className="text-lg text-white/70 leading-relaxed mb-10 max-w-2xl mx-auto">
+                Não perca horas planejando. Nossa IA cria um roteiro dia-a-dia
+                personalizado com todos esses highlights e dicas incluídos.
+              </p>
+
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Link href="/" className="w-full sm:w-auto">
+                  <Button
+                    variant="outline"
+                    className="w-full sm:w-auto h-14 px-8 rounded-full border-white/20 bg-transparent text-white hover:bg-white/10 hover:text-white uppercase font-bold tracking-wide transition-all"
+                  >
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Explorar outros
+                  </Button>
+                </Link>
+
+                <Link
+                  href={`/criar-roteiro?destino=${destination.city}`}
+                  className="w-full sm:w-auto"
+                >
+                  <Button className="w-full sm:w-auto h-14 px-10 rounded-full bg-brand-primary hover:bg-white hover:text-brand-dark text-white font-bold uppercase tracking-wide text-lg shadow-[0_0_20px_rgba(225,29,72,0.4)] hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all hover:scale-105">
+                    <Sparkles className="mr-2 h-5 w-5" />
+                    Criar Roteiro Grátis
+                  </Button>
+                </Link>
+              </div>
+
+              <p className="text-xs text-white/30 mt-6">
+                Leva menos de 1 minuto. Personalize como quiser.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
   );
