@@ -9,6 +9,7 @@ import {
   MapPin,
   Plane,
   Sparkles,
+  Star,
   Sun,
   Thermometer,
   Users,
@@ -22,6 +23,18 @@ interface PageProps {
   searchParams: Promise<{
     destino?: string;
   }>;
+}
+
+function getRatingLabel(ratingStr?: string) {
+  const rating = parseFloat(ratingStr || "0");
+
+  if (isNaN(rating) || rating === 0) return "Avaliação pendente";
+  if (rating >= 4.8) return "Experiência Incrível";
+  if (rating >= 4.5) return "Excelente Escolha";
+  if (rating >= 4.0) return "Muito Bom";
+  if (rating >= 3.5) return "Boa Experiência";
+
+  return "Experiência Média";
 }
 
 export default async function SaibaMais(props: PageProps) {
@@ -77,7 +90,7 @@ export default async function SaibaMais(props: PageProps) {
 
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
 
-        <div className="absolute top-0 left-0 w-full z-10 pt-18 min-[390px]:pt-4 md:pt-12">
+        <div className="absolute top-0 left-0 w-full z-10 pt-18 min-[370px]:pt-4 md:pt-12">
           <div className="container mx-auto pt-4 px-4 sm:px-8">
             <div className="inline-flex items-center rounded-full shadow-sm px-3 py-1 gap-2 bg-brand-dark ">
               <h1 className="font-sans text-xs font-bold tracking-wider uppercase text-brand-cream">
@@ -86,29 +99,51 @@ export default async function SaibaMais(props: PageProps) {
             </div>
           </div>
 
-          <div className="flex flex-col gap-8 px-4 sm:px-8 mx-auto container pt-4 min-[390px]:pt-40 min-[400px]:pt-35 sm:pt-36 md:pt-38">
+          <div className="flex flex-col gap-2 px-4 sm:px-8 mx-auto container pt-4 min-[390px]:pt-24 min-[400px]:pt-35 sm:pt-36 md:pt-38">
             <h2 className="text-4xl min-[390px]:text-5xl sm:text-7xl md:text-7xl uppercase font-sans text-white font-bold">
               {destination.city}
             </h2>
 
             <div className="flex items-center gap-2 text-gray-400">
               <MapPin className="h-5 w-5" />
-              <h3 className="text-xl min-[390px]:text-3xl sm:text-5xl max-w-[220px] min-[390px]:max-w-[250px] md:max-w-[400px] font-sans">
+              <h3 className="text-lg min-[390px]:text-lg sm:text-2xl max-w-[220px] min-[390px]:max-w-[250px] md:max-w-[400px] font-sans">
                 {destination.country}
               </h3>
             </div>
 
             <div className="flex flex-col gap-4">
-              <Link href={`/criar-roteiro?destino=${destination.city}`}>
-                <Button className="h-6 p-4 bg-brand-dark hover:bg-brand-primary text-white font-bold uppercase font-sans text-xs rounded-full  shadow-[0_0_20px_rgba(0,0,0,0.3)]">
-                  REVIEWS & ESTRELAS AQUI
-                </Button>
-              </Link>
-              <Link href={`/criar-roteiro?destino=${destination.city}`}>
-                <Button className="h-6 p-4 bg-brand-dark hover:bg-brand-primary text-white font-bold uppercase font-sans text-xs rounded-full  shadow-[0_0_20px_rgba(0,0,0,0.3)]">
-                  CRIE SEU ROTEIRO
-                </Button>
-              </Link>
+              <div className="flex flex-col items-start gap-6 mt-6">
+                <div className="inline-flex items-center gap-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 pr-6 shadow-lg">
+                  <div className="flex items-center gap-2">
+                    <div className="p-2 bg-yellow-400/20 rounded-full">
+                      <Star className="h-6 w-6 text-yellow-400 fill-yellow-400" />
+                    </div>
+                    <span className="text-3xl font-bold text-white font-sans tracking-tight">
+                      {destination.rating || "4.8"}
+                    </span>
+                  </div>
+
+                  <div className="w-[1px] h-10 bg-white/20" />
+
+                  <div className="flex flex-col justify-center">
+                    <span className="text-xs font-bold text-brand-cream uppercase tracking-wider mb-0.5">
+                      {getRatingLabel(destination.rating)}
+                    </span>
+                    <div className="flex items-center gap-1 text-gray-200 text-sm">
+                      <span className="font-medium text-white border-b border-white/30 pb-0.5">
+                        {destination.reviews || "12k+ reviews"}
+                      </span>
+                      <span className="opacity-70">globais</span>
+                    </div>
+                  </div>
+                </div>
+
+                <Link href={`/criar-roteiro?destino=${destination.city}`}>
+                  <Button className="h-14 px-8 bg-brand-dark hover:bg-brand-primary text-white font-bold uppercase font-sans text-sm rounded-full shadow-[0_0_20px_rgba(0,0,0,0.4)] transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] border border-white/10">
+                    Criar meu roteiro agora
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
