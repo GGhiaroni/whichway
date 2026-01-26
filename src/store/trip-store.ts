@@ -3,7 +3,6 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 export type TripInterest =
   | "natureza"
-  | "praias"
   | "história"
   | "compras"
   | "gastronomia"
@@ -11,8 +10,9 @@ export type TripInterest =
   | "aventura"
   | "cultura local"
   | "fotografia"
-  | "relaxamento"
+  | "espiritualidade"
   | "arquitetura"
+  | "praias"
   | "esportes";
 
 export type TripBudget = "econômico" | "moderado" | "confortável" | "luxo";
