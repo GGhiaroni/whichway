@@ -1,7 +1,7 @@
+import { GEMINI_MODEL_FLASH, genAI } from "@/lib/gemini";
 import { prisma } from "@/lib/prisma";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { getUnsplashPhoto } from "@/lib/unsplash";
 import { NextResponse } from "next/server";
-import { createApi } from "unsplash-js";
 
 interface HighlightInput {
   title: string;
@@ -34,18 +34,12 @@ interface DestinationInput {
   tips: string[];
 }
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY || "");
-
-const unsplash = createApi({
-  accessKey: process.env.UNSPLASH_ACCESS_KEY || "",
-  fetch: fetch,
-});
-
 export async function GET(request: Request) {
   try {
     console.log("Iniciando atualização de destinos...");
 
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const model = genAI.getGenerativeModel({ model: GEMINI_MODEL_FLASH });
+
     const prompt = `
       Liste 8 destinos de viagem que estão em alta mundialmente nesta semana.
       Retorne APENAS um JSON array puro, sem markdown, com este formato exato:
@@ -97,49 +91,30 @@ export async function GET(request: Request) {
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
-
     const text = response.text().replace(/```json|```/g, "");
-
     const destinations = JSON.parse(text) as DestinationInput[];
 
     await prisma.featuredDestination.deleteMany({});
 
     for (const dest of destinations) {
-      const querySearch = `${dest.landmark} iconic view`;
-      const photoResult = await unsplash.search.getPhotos({
-        query: querySearch,
-        perPage: 1,
-        orientation: "landscape",
-        orderBy: "relevant",
-      });
+      const mainPhotoUrls = await getUnsplashPhoto(
+        `${dest.landmark} iconic view`,
+      );
 
-      let fallbackImage =
+      const fallbackImage =
         "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1";
-
-      if (photoResult.response && photoResult.response.results.length > 0) {
-        fallbackImage = photoResult.response.results[0].urls.regular;
-      }
+      const finalImageUrl = mainPhotoUrls?.regular || fallbackImage;
 
       const highlightsWithImages = await Promise.all(
         dest.highlights.map(async (highlight) => {
-          const highlightPhotoRes = await unsplash.search.getPhotos({
-            query: highlight.imageQuery,
-            perPage: 1,
-            orientation: "landscape",
-          });
+          const photoUrls = await getUnsplashPhoto(highlight.imageQuery);
 
-          let highlightUrl =
+          const highlightFallback =
             "https://images.unsplash.com/photo-1521747116042-5a810fda9664";
-          if (
-            highlightPhotoRes.response &&
-            highlightPhotoRes.response.results.length > 0
-          ) {
-            highlightUrl = highlightPhotoRes.response.results[0].urls.small;
-          }
 
           return {
             title: highlight.title,
-            imageUrl: highlightUrl,
+            imageUrl: photoUrls?.small || highlightFallback,
           };
         }),
       );
@@ -150,7 +125,7 @@ export async function GET(request: Request) {
           country: dest.country,
           description: dest.description,
           priceLevel: dest.priceLevel,
-          imageUrl: fallbackImage,
+          imageUrl: finalImageUrl,
           rating: dest.rating,
           reviews: dest.reviews,
           tempSummer: dest.tempSummer,
@@ -181,12 +156,12 @@ export async function GET(request: Request) {
 
     return NextResponse.json({
       success: true,
-      message: "Destinos atualizados com sucesso.",
+      message: "Destinos atualizados!",
     });
   } catch (error) {
-    console.error("Erro ao atualizar:", error);
+    console.error("Erro fatal:", error);
     return NextResponse.json(
-      { success: false, error: "Falha na atualização" },
+      { success: false, error: "Falha geral" },
       { status: 500 },
     );
   }
