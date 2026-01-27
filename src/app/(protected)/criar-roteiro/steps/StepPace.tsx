@@ -102,7 +102,7 @@ export default function StepPace() {
 
       <div className="flex justify-center md:justify-end">
         <Button
-          onClick={() => setStep(3)}
+          onClick={() => setStep(6)}
           disabled={!pace}
           className="
             w-full md:w-auto px-10 h-14 rounded-full text-lg font-bold shadow-xl transition-all hover:scale-105
