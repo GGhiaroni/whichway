@@ -1,25 +1,172 @@
+"use client";
+
+import generateTrip from "@/app/actions/generate-trip";
+import { suggestDestinations } from "@/app/actions/suggest-destination";
 import { Button } from "@/components/ui/button";
 import { useTripStore } from "@/store/trip-store";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import {
   Activity,
+  ArrowRight,
   Calendar,
   MapPin,
+  RefreshCcw,
   Sparkles,
   Users,
   Wallet,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
+
+interface Suggestion {
+  cidade: string;
+  pais: string;
+  motivo: string;
+  imagem: string | null;
+}
 
 export default function StepSummary() {
-  const { dates, interests, budget, travelers, pace } = useTripStore();
-  const [isLoading, setIsLoading] = useState(false);
+  const {
+    dates,
+    interests,
+    budget,
+    travelers,
+    pace,
+    destination,
+    setDestination,
+  } = useTripStore();
 
-  const handleGenerate = async () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const router = useRouter();
+
+  const createFinalTrip = async (targetDestination: string) => {
+    if (!dates?.from || !dates?.to || !budget || !pace) return;
+
     setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 2000);
+    try {
+      const result = await generateTrip({
+        destination: targetDestination,
+        dates: { from: dates.from, to: dates.to },
+        budget,
+        pace,
+        travelers,
+        interests,
+      });
+
+      if (result.success && result.tripId) {
+        toast.success("Roteiro criado com sucesso! 🚀");
+        router.push(`/roteiro/${result.tripId}`);
+      } else {
+        throw new Error(result.error || "Erro desconhecido");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Erro ao gerar roteiro final.");
+      setIsLoading(false);
+    }
   };
+
+  const handleAction = async () => {
+    if (!dates?.from || !dates?.to) {
+      toast.error("Por favor, selecione as datas da viagem.");
+      return;
+    }
+    if (interests.length === 0) {
+      toast.error("Selecione pelo menos um interesse.");
+      return;
+    }
+    if (!budget) {
+      toast.error("Selecione um orçamento.");
+      return;
+    }
+
+    setIsLoading(true);
+
+    if (destination) {
+      await createFinalTrip(destination);
+      return;
+    }
+
+    try {
+      const result = await suggestDestinations({
+        budget,
+        interests,
+        travelers,
+        dates: { from: dates.from, to: dates.to },
+      });
+
+      if (result.success && result.suggestions) {
+        setSuggestions(result.suggestions);
+        setIsLoading(false);
+      } else {
+        throw new Error(result.error);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Não conseguimos sugerir destinos agora.");
+      setIsLoading(false);
+    }
+  };
+
+  if (suggestions.length > 0) {
+    return (
+      <div className="pt-2 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <h2 className="text-2xl font-bold text-brand-cream text-center mb-2">
+          Destinos Perfeitos para Você
+        </h2>
+        <p className="text-brand-cream/80 text-center mb-6 text-sm">
+          Baseado no seu perfil, selecionamos estas 3 opções:
+        </p>
+
+        <div className="grid gap-4 mb-6">
+          {suggestions.map((place, idx) => (
+            <div
+              key={idx}
+              onClick={() => {
+                setDestination(place.cidade);
+                createFinalTrip(place.cidade);
+              }}
+              className="group relative h-32 md:h-40 w-full rounded-2xl overflow-hidden cursor-pointer border-2 border-transparent hover:border-brand-primary transition-all shadow-lg"
+            >
+              <div
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                style={{
+                  backgroundImage: `url(${place.imagem || "/placeholder.jpg"})`,
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent" />
+              <div className="absolute bottom-0 left-0 p-4 md:p-6 w-full">
+                <div className="flex justify-between items-end">
+                  <div>
+                    <h3 className="font-bold text-xl text-white mb-1">
+                      {place.cidade}, {place.pais}
+                    </h3>
+                    <p className="text-xs text-white/80 line-clamp-1 md:line-clamp-none max-w-[80%]">
+                      {place.motivo}
+                    </p>
+                  </div>
+                  <div className="bg-brand-primary p-2 rounded-full text-white transform translate-x-10 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300">
+                    <ArrowRight className="w-5 h-5" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <Button
+          variant="ghost"
+          onClick={() => setSuggestions([])}
+          className="w-full text-brand-cream hover:text-white hover:bg-white/10 flex items-center gap-2"
+        >
+          <RefreshCcw className="w-4 h-4" /> Tentar preferências diferentes
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="pt-2">
@@ -30,13 +177,31 @@ export default function StepSummary() {
       </div>
 
       <h2 className="text-2xl font-bold text-brand-cream mb-2 text-center">
-        Respire fundo, seu roteiro está sendo criado
+        {destination ? "Pronto para decolar?" : "Vamos definir seu destino!"}
       </h2>
       <p className="text-brand-cream text-center mb-8 font-semibold">
-        Confira o resumo das suas preferências:
+        {destination
+          ? `Criando roteiro para ${destination}`
+          : "Analisando seu perfil..."}
       </p>
 
       <div className="flex flex-col gap-4 mb-8">
+        {destination && (
+          <div className="flex items-center gap-4 p-4 bg-brand-primary/10 rounded-2xl border border-brand-primary/20">
+            <div className="p-3 bg-brand-primary rounded-xl text-white">
+              <MapPin className="w-5 h-5" />
+            </div>
+            <div>
+              <p className="text-xs text-brand-cream/60 uppercase font-bold">
+                Destino Escolhido
+              </p>
+              <p className="font-bold text-brand-cream text-lg">
+                {destination}
+              </p>
+            </div>
+          </div>
+        )}
+
         <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
           <div className="p-3 bg-brand-primary/10 rounded-xl text-brand-primary">
             <Calendar className="w-5 h-5" />
@@ -112,11 +277,20 @@ export default function StepSummary() {
       </div>
 
       <Button
-        onClick={handleGenerate}
+        onClick={handleAction}
         disabled={isLoading}
-        className="w-full h-14 rounded-full bg-brand-primary text-white font-bold text-lg shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]"
+        className="w-full h-14 rounded-full bg-brand-primary text-white font-bold text-lg shadow-lg hover:shadow-xl transition-all hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed"
       >
-        {isLoading ? "Gerando Mágica..." : "✨ Ver Roteiro Personalizado"}
+        {isLoading ? (
+          <span className="flex items-center gap-2">
+            <Sparkles className="w-5 h-5 animate-spin" />
+            {destination ? "Gerando Roteiro..." : "Buscando Destinos..."}
+          </span>
+        ) : destination ? (
+          "✨ Gerar Roteiro Personalizado"
+        ) : (
+          "🔍 Descobrir Destinos Ideais"
+        )}
       </Button>
     </div>
   );

@@ -21,43 +21,48 @@ export default async function generateTrip(data: GenerateTripsParams) {
       return { success: false, error: "Usuário não autenticado." };
     }
 
-    const userEmail = clerkUser.emailAddresses[0].emailAddress;
+    const email = clerkUser.emailAddresses[0].emailAddress;
 
-    const dbUser = await prisma.user.findUnique({
+    const dbUser = await prisma.user.upsert({
       where: {
-        email: userEmail,
+        email: email,
+      },
+      update: {
+        imageUrl: clerkUser.imageUrl,
+        firstName: clerkUser.firstName,
+        lastName: clerkUser.lastName,
+      },
+      create: {
+        clerkId: clerkUser.id,
+        email: email,
+        imageUrl: clerkUser.imageUrl,
+        firstName: clerkUser.firstName,
+        lastName: clerkUser.lastName,
       },
     });
 
-    if (!dbUser) {
-      return {
-        success: false,
-        error: "Usuário não encontrado no banco.",
-      };
-    }
-
     const prompt = `
-            Atue como um especialista em viagens e criação de roteiros de viagens únicos que marcam de forma significativa seus clientes.
-            Crie um roteiro personalizado, como um agente de viagens dedicado, especialista e com muitos anos de experiência no mercado, para o destino ${data.destination}.
+            Atue como um especialista em viagens de luxo e aventura.
+            Crie um roteiro completo para ${data.destination}.
             
             Detalhes da viagem:
             - Data: ${data.dates.from} até ${data.dates.to}
             - Orçamento: ${data.budget}
-            - Ritmo escolhido pelos viajantes (entre "Relaxado", "Equilibrado" e "Intenso"): ${data.pace}
+            - Ritmo: ${data.pace}
             - Viajantes: ${data.travelers.adults} adultos, ${data.travelers.children} crianças
-            - Interesses principais do(s) viajante(s): ${data.interests.join(", ")}
+            - Interesses: ${data.interests.join(", ")}
 
             Retorne APENAS um JSON válido com a seguinte estrutura (sem markdown):
             {
-              "titulo": "Um título cativante e único para viagem",
-              "resumo": "Um parágrafo sobre o que esperar dessa viagem",
+              "titulo": "Um título cativante para a viagem",
+              "resumo": "Um parágrafo curto sobre o que esperar",
               "dias": [
                 {
                   "dia": 1,
                   "titulo": "Chegada e Reconhecimento",
-                  "manha": { "atividade": "...", "descricao": "...", "duracao estimada": 2h },
-                  "tarde": { "atividade": "...", "descricao": "...", "duracao estimada": 2h },
-                  "noite": { "atividade": "...", "descricao": "...", "duracao estimada": 2h }
+                  "manha": { "atividade": "...", "descricao": "..." },
+                  "tarde": { "atividade": "...", "descricao": "..." },
+                  "noite": { "atividade": "...", "descricao": "..." }
                 }
               ]
             }
@@ -65,12 +70,11 @@ export default async function generateTrip(data: GenerateTripsParams) {
 
     const model = genAI.getGenerativeModel({ model: GEMINI_MODEL_FLASH });
     const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = response
-      .text()
-      .replace(/```json|```/g, "")
-      .trim();
+    const responseText = result.response.text();
 
+    if (!responseText) throw new Error("IA não retornou resposta");
+
+    const text = responseText.replace(/```json|```/g, "").trim();
     const itineraryJson = JSON.parse(text);
 
     const trip = await prisma.trip.create({

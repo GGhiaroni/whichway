@@ -3,8 +3,8 @@
 import Logomarca from "@/app/components/Logomarca";
 import { useTripStore } from "@/store/trip-store";
 import { ArrowLeft } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import StepBudget from "./steps/StepBudget";
 import StepDates from "./steps/StepDate";
 import StepInterests from "./steps/StepInterests";
@@ -13,6 +13,17 @@ import StepSummary from "./steps/StepSumary";
 import StepTravelers from "./steps/StepTravelers";
 
 export default function CriarRoteiro() {
+  const searchParams = useSearchParams();
+  const setDestination = useTripStore((s) => s.setDestination);
+  const destination = useTripStore((s) => s.destination);
+
+  useEffect(() => {
+    const destParam = searchParams.get("destino");
+    if (destParam && destParam !== destination) {
+      setDestination(destParam);
+    }
+  }, [searchParams, setDestination]);
+
   const { step, setStep } = useTripStore();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
