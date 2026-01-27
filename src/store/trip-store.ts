@@ -26,6 +26,7 @@ interface TripState {
   budget: TripBudget | null;
   travelers: { adults: number; children: number };
   pace: TripPace | null;
+  destination: string | null;
 
   setStep: (step: number) => void;
   setDates: (
@@ -35,6 +36,7 @@ interface TripState {
   setBudget: (budget: TripBudget) => void;
   setTravelers: (type: "adults" | "children", value: number) => void;
   setPace: (pace: TripPace) => void;
+  setDestination: (destination: string | null) => void;
   reset: () => void;
 }
 
@@ -47,6 +49,7 @@ export const useTripStore = create<TripState>()(
       budget: null,
       travelers: { adults: 1, children: 0 },
       pace: null,
+      destination: null,
 
       setStep: (step) => set({ step }),
       setDates: (dates) => set({ dates }),
@@ -65,6 +68,7 @@ export const useTripStore = create<TripState>()(
           travelers: { ...state.travelers, [type]: Math.max(0, value) },
         })),
       setPace: (pace) => set({ pace }),
+      setDestination: (destination) => set({ destination }),
       reset: () =>
         set({
           step: 1,
@@ -73,6 +77,7 @@ export const useTripStore = create<TripState>()(
           budget: null,
           travelers: { adults: 1, children: 0 },
           pace: null,
+          destination: null,
         }),
     }),
     {
