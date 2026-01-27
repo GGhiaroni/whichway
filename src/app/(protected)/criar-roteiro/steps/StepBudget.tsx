@@ -96,7 +96,7 @@ export default function StepBudget() {
                   </span>
 
                   <span
-                    className={`text-sm font-bold tracking-wide transition-colors ${
+                    className={`w-fit text-sm font-bold tracking-wide transition-colors ${
                       isSelected
                         ? "text-emerald-700 bg-emerald-100/50 px-2 py-1 rounded-md"
                         : "text-brand-cream/90"
