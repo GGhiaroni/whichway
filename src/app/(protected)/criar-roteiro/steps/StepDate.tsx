@@ -67,13 +67,27 @@ export default function StepDates() {
             locale={ptBR}
             className="rounded-md"
             classNames={{
+              table: "w-full border-collapse space-y-1",
+
+              head_row: "flex w-full justify-between mb-2",
+
+              head_cell:
+                "text-brand-dark/60 font-medium text-sm w-9 text-center capitalize",
+
               day_selected:
                 "bg-brand-primary text-white hover:bg-brand-primary hover:text-white focus:bg-brand-primary focus:text-white",
               day_today: "bg-gray-100 text-gray-900 font-bold",
+
+              day: "h-9 w-9 p-0 font-normal aria-selected:opacity-100 hover:bg-black/5 rounded-md transition-colors",
+
               day_range_middle:
-                "bg-brand-primary/20 text-brand-primary hover:bg-brand-primary/30 hover:text-brand-primary",
-              head_cell: "text-brand-dark/60 font-medium pt-1",
-              caption_label: "text-brand-dark font-bold text-lg capitalize",
+                "bg-brand-primary/20 text-brand-primary hover:bg-brand-primary/30 hover:text-brand-primary rounded-none",
+
+              day_range_start: "rounded-l-md rounded-r-none",
+              day_range_end: "rounded-l-none rounded-r-md",
+
+              caption_label:
+                "text-brand-dark font-bold text-lg capitalize mb-4",
             }}
             numberOfMonths={1}
             disabled={(date) =>
