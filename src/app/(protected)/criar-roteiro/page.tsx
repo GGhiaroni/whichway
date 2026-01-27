@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import StepBudget from "./steps/StepBudget";
 import StepInterests from "./steps/StepInterests";
+import StepPace from "./steps/StepPace";
 
 export default function CriarRoteiro() {
   const { step, setStep } = useTripStore();
@@ -46,12 +47,10 @@ export default function CriarRoteiro() {
         <div className="w-full max-w-2xl bg-brand-dark rounded-3xl shadow-xl p-6 md:p-10 border border-gray-100 min-h-[400px] relative">
           {/* {step === 1 && <StepDates />} */}
           {step === 2 && <StepInterests />}
-          {
-            step === 1 && <StepBudget />
-            /*{step === 4 && <StepTravelers />}
-          {step === 5 && <StepPace />}
-          {step === 6 && <StepSummary />} */
-          }
+          {step === 1 && <StepBudget />}
+          {/* {step === 4 && <StepTravelers />} */}
+          {step === 3 && <StepPace />}
+          {/* {step === 6 && <StepSummary />} */}
 
           <button
             onClick={handleBack}

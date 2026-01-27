@@ -1,67 +1,56 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { TripBudget, useTripStore } from "@/store/trip-store";
+import { TripPace, useTripStore } from "@/store/trip-store";
 
-const budgetOptions: {
-  id: TripBudget;
+const paceOptions: {
+  id: TripPace;
   label: string;
   desc: string;
-  value: string;
   icon: string;
 }[] = [
   {
-    id: "econômico",
-    label: "Econômico",
-    desc: "Hostels, transporte público, refeições locais",
-    value: "Até R$ 5.000",
-    icon: "🎒",
+    id: "relaxado",
+    label: "Relaxado",
+    desc: "Você não abre mão de uma viagem para descansar e revigorar as energias.",
+    icon: "🧘‍♂️",
   },
   {
-    id: "moderado",
-    label: "Moderado",
-    desc: "Hotéis 3 estrelas, algumas experiências",
-    value: "R$ 5.000 - R$ 10.000",
-    icon: "💰",
+    id: "equilibrado",
+    label: "Equilibrado",
+    desc: "Descansar é importante, mas você não quer abrir mão de conhecer os principais atrativos dos seus destinos.",
+    icon: "😎",
   },
   {
-    id: "confortável",
-    label: "Confortável",
-    desc: "Hotéis 4 estrelas, tours guiados",
-    value: "R$ 10.000 - R$ 20.000",
-    icon: "🥂",
-  },
-  {
-    id: "luxo",
-    label: "Luxo",
-    desc: "Hotéis 5 estrelas, experiências exclusivas",
-    value: "Acima de R$ 20.000",
-    icon: "💎",
+    id: "intenso",
+    label: "Intenso",
+    desc: "Descanso? Que nada! Você quer aproveitar cada atração o máximo que puder e voltar com a mala cheia de histórias e recordações!",
+    icon: "🏃",
   },
 ];
 
-export default function StepBudget() {
-  const { budget, setBudget, setStep } = useTripStore();
+export default function StepPace() {
+  const { pace, setPace, setStep } = useTripStore();
 
   return (
     <div className="w-full pt-8 md:pt-4">
       <div className="text-center mb-8">
         <h2 className="text-3xl font-serif text-brand-cream mb-2 drop-shadow-sm">
-          Qual seu orçamento?
+          Qual o seu perfil para essa viagem?
         </h2>
         <p className="text-brand-cream/70 text-sm md:text-base font-semibold">
-          Isso nos ajuda a recomendar opções adequadas ao seu bolso.
+          Vamos pensar em roteiros que atendam criteriosamente sua escolha.
         </p>
       </div>
 
       <div className="flex flex-col gap-4 mb-10">
-        {budgetOptions.map((item) => {
-          const isSelected = budget === item.id;
+        {paceOptions.map((item) => {
+          const isSelected = pace === item.id;
 
           return (
             <div
               key={item.id}
-              onClick={() => setBudget(item.id)}
+              onClick={() => setPace(item.id)}
               className={`
                 group relative cursor-pointer rounded-2xl p-5 border transition-all duration-300 flex flex-col md:flex-row md:items-center gap-4 select-none
                 ${
@@ -94,16 +83,6 @@ export default function StepBudget() {
                   >
                     {item.label}
                   </span>
-
-                  <span
-                    className={`w-fit text-sm font-bold tracking-wide transition-colors ${
-                      isSelected
-                        ? "text-emerald-700 bg-emerald-100/50 px-2 py-1 rounded-md"
-                        : "text-brand-cream/90"
-                    }`}
-                  >
-                    {item.value}
-                  </span>
                 </div>
 
                 <p
@@ -123,8 +102,8 @@ export default function StepBudget() {
 
       <div className="flex justify-center md:justify-end">
         <Button
-          onClick={() => setStep(4)}
-          disabled={!budget}
+          onClick={() => setStep(3)}
+          disabled={!pace}
           className="
             w-full md:w-auto px-10 h-14 rounded-full text-lg font-bold shadow-xl transition-all hover:scale-105
             bg-brand-primary hover:bg-brand-light text-white disabled:opacity-50 disabled:cursor-not-allowed
