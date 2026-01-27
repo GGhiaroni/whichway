@@ -9,6 +9,7 @@ import StepBudget from "./steps/StepBudget";
 import StepDates from "./steps/StepDate";
 import StepInterests from "./steps/StepInterests";
 import StepPace from "./steps/StepPace";
+import StepSummary from "./steps/StepSumary";
 import StepTravelers from "./steps/StepTravelers";
 
 export default function CriarRoteiro() {
@@ -52,7 +53,7 @@ export default function CriarRoteiro() {
           {step === 3 && <StepBudget />}
           {step === 4 && <StepTravelers />}
           {step === 5 && <StepPace />}
-          {/* {step === 6 && <StepSummary />} */}
+          {step === 6 && <StepSummary />}
 
           <button
             onClick={handleBack}
