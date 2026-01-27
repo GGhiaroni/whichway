@@ -5,6 +5,7 @@ import { useTripStore } from "@/store/trip-store";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import StepBudget from "./steps/StepBudget";
 import StepInterests from "./steps/StepInterests";
 
 export default function CriarRoteiro() {
@@ -44,11 +45,13 @@ export default function CriarRoteiro() {
       <main className="flex-1 flex flex-col items-center justify-start pt-8 pb-12 px-4">
         <div className="w-full max-w-2xl bg-brand-dark rounded-3xl shadow-xl p-6 md:p-10 border border-gray-100 min-h-[400px] relative">
           {/* {step === 1 && <StepDates />} */}
-          {step === 1 && <StepInterests />}
-          {/* {step === 3 && <StepBudget />}
-          {step === 4 && <StepTravelers />}
+          {step === 2 && <StepInterests />}
+          {
+            step === 1 && <StepBudget />
+            /*{step === 4 && <StepTravelers />}
           {step === 5 && <StepPace />}
-          {step === 6 && <StepSummary />} */}
+          {step === 6 && <StepSummary />} */
+          }
 
           <button
             onClick={handleBack}
