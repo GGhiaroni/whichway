@@ -36,6 +36,7 @@ export default function StepSummary() {
     pace,
     destination,
     setDestination,
+    reset,
   } = useTripStore();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -58,6 +59,9 @@ export default function StepSummary() {
 
       if (result.success && result.tripId) {
         toast.success("Roteiro criado com sucesso! 🚀");
+
+        reset();
+
         router.push(`/roteiro/${result.tripId}`);
       } else {
         throw new Error(result.error || "Erro desconhecido");
