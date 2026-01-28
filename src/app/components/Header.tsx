@@ -25,7 +25,9 @@ export default function Header() {
   return (
     <header className="fixed top-0 left-0 w-full bg-brand-cream backdrop-blur-md border-b border-stone-100 z-50">
       <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
-        <Logomarca />
+        <div className="flex-1 flex justify-start">
+          <Logomarca />
+        </div>
 
         <nav className="hidden md:flex items-center gap-8">
           <Link
@@ -48,7 +50,7 @@ export default function Header() {
           </Link>
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="flex-1 flex justify-end items-center gap-4">
           {isSignedIn ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -80,19 +82,25 @@ export default function Header() {
 
                 <DropdownMenuSeparator className="bg-gray-100" />
 
-                <Link href="/meu-perfil">
-                  <DropdownMenuItem className="cursor-pointer rounded-lg focus:bg-stone-50 text-gray-600 focus:text-brand-primary py-2">
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/meu-perfil"
+                    className="cursor-pointer w-full flex items-center rounded-lg focus:bg-stone-50 text-gray-600 focus:text-brand-primary py-2"
+                  >
                     <User className="w-4 h-4 mr-2" />
                     Meu Perfil
-                  </DropdownMenuItem>
-                </Link>
+                  </Link>
+                </DropdownMenuItem>
 
-                <Link href="/criar-roteiro">
-                  <DropdownMenuItem className="cursor-pointer rounded-lg focus:bg-stone-50 text-gray-600 focus:text-brand-primary py-2">
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/criar-roteiro"
+                    className="cursor-pointer w-full flex items-center rounded-lg focus:bg-stone-50 text-gray-600 focus:text-brand-primary py-2"
+                  >
                     <TrendingUp className="w-4 h-4 mr-2" />
                     Novo Roteiro
-                  </DropdownMenuItem>
-                </Link>
+                  </Link>
+                </DropdownMenuItem>
 
                 <DropdownMenuSeparator className="bg-gray-100" />
 
