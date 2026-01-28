@@ -91,6 +91,8 @@ export default async function generateTrip(data: GenerateTripsParams) {
       },
     });
 
+    console.log("💾 NOVO ROTEIRO CRIADO NO BANCO. ID:", trip.id);
+
     return { success: true, tripId: trip.id };
   } catch (error) {
     console.error("Erro ao gerar roteiro:", error);

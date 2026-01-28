@@ -36,13 +36,15 @@ interface ItineraryContent {
 }
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function RoteiroPage({ params }: PageProps) {
   const { userId: clerkId } = await auth();
+
+  const { id } = await params;
 
   if (!clerkId) {
     redirect("/sign-in");
@@ -59,7 +61,7 @@ export default async function RoteiroPage({ params }: PageProps) {
 
   const trip = await prisma.trip.findFirst({
     where: {
-      id: params.id,
+      id: id,
       userId: user.id,
     },
   });
@@ -144,7 +146,7 @@ export default async function RoteiroPage({ params }: PageProps) {
           <div className="flex items-center justify-center gap-4 mb-8">
             <div className="h-[1px] bg-brand-dark/10 flex-1"></div>
             <h3 className="text-sm font-bold text-brand-dark/40 uppercase tracking-[0.2em]">
-              Seu Planejamento Diário
+              Seu planejamento diário
             </h3>
             <div className="h-[1px] bg-brand-dark/10 flex-1"></div>
           </div>

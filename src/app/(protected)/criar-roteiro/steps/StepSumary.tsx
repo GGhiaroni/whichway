@@ -141,14 +141,14 @@ export default function StepSummary() {
                   backgroundImage: `url(${place.imagem || "/placeholder.jpg"})`,
                 }}
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/100 to-black/10" />
               <div className="absolute bottom-0 left-0 p-4 md:p-6 w-full">
                 <div className="flex justify-between items-end">
                   <div>
                     <h3 className="font-bold text-xl text-white mb-1">
                       {place.cidade}, {place.pais}
                     </h3>
-                    <p className="text-xs text-white/80 line-clamp-1 md:line-clamp-none max-w-[80%]">
+                    <p className="text-sm font-bold text-white/80 line-clamp-1 md:line-clamp-none max-w-[80%]">
                       {place.motivo}
                     </p>
                   </div>
@@ -289,7 +289,7 @@ export default function StepSummary() {
         {isLoading ? (
           <span className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 animate-spin" />
-            {destination ? "Gerando Roteiro..." : "Buscando Destinos..."}
+            {destination ? "Gerando roteiro..." : "Buscando destinos..."}
           </span>
         ) : destination ? (
           "✨ Gerar roteiro personalizado"
