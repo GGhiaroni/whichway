@@ -37,7 +37,7 @@ export default function Header() {
             Em Alta
           </Link>
           <Link
-            href="/criar-roteiro"
+            href="/criar-roteiro?new=true"
             className={`text-sm font-medium transition-colors hover:text-brand-primary ${isActive("/criar-roteiro") ? "text-brand-primary" : "text-gray-600"}`}
           >
             Criar Roteiro
@@ -94,7 +94,7 @@ export default function Header() {
 
                 <DropdownMenuItem asChild>
                   <Link
-                    href="/criar-roteiro"
+                    href="/criar-roteiro?new=true"
                     className="cursor-pointer w-full flex items-center rounded-lg focus:bg-stone-50 text-gray-600 focus:text-brand-primary py-2"
                   >
                     <TrendingUp className="w-4 h-4 mr-2" />
