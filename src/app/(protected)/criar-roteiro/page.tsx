@@ -1,6 +1,5 @@
 "use client";
 
-import Logomarca from "@/app/components/Logomarca";
 import { useTripStore } from "@/store/trip-store";
 import { ArrowLeft } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -41,20 +40,17 @@ export default function CriarRoteiro() {
 
   return (
     <div className="min-h-screen bg-brand-cream flex flex-col">
-      <header className="px-6 py-6 flex justify-between items-center max-w-3xl mx-auto w-full">
-        <div className="flex items-center gap-2">
-          <Logomarca />
-        </div>
-        <span className="text-sm text-brand-dark font-bold">
+      <div className="mt-4 container mx-auto px-6 md:px-20">
+        <span className="text-sm text-brand-dark font-bold ">
           Passo {step} de {totalSteps}
         </span>
-      </header>
 
-      <div className="w-full h-1.5 bg-white">
-        <div
-          className="h-full bg-brand-light transition-all duration-500 ease-out"
-          style={{ width: `${progress}%` }}
-        />
+        <div className="w-full h-1.5 bg-white">
+          <div
+            className="h-full bg-brand-light transition-all duration-500 ease-out"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
       </div>
 
       <main className="flex-1 flex flex-col items-center justify-start pt-8 pb-12 px-4">
