@@ -118,10 +118,10 @@ export default function StepSummary() {
   if (suggestions.length > 0) {
     return (
       <div className="pt-2 animate-in fade-in slide-in-from-bottom-4 duration-500">
-        <h2 className="text-2xl font-bold text-brand-cream text-center mb-2">
-          Destinos Perfeitos para Você
+        <h2 className="text-2xl font-bold text-brand-cream text-center mb-2 pt-6">
+          Destinos perfeitos para você
         </h2>
-        <p className="text-brand-cream/80 text-center mb-6 text-sm">
+        <p className="text-brand-cream/80 text-center mb-6 text-sm font-semibold">
           Baseado no seu perfil, selecionamos estas 3 opções:
         </p>
 
@@ -164,9 +164,10 @@ export default function StepSummary() {
         <Button
           variant="ghost"
           onClick={() => setSuggestions([])}
-          className="w-full text-brand-cream hover:text-white hover:bg-white/10 flex items-center gap-2"
+          className="w-full text-brand-cream hover:text-white hover:bg-white/10 flex items-center gap-2 font-semibold"
         >
-          <RefreshCcw className="w-4 h-4" /> Tentar preferências diferentes
+          <RefreshCcw className="w-4 h-4 font-semibold" /> Tentar preferências
+          diferentes
         </Button>
       </div>
     );
@@ -291,9 +292,12 @@ export default function StepSummary() {
             {destination ? "Gerando Roteiro..." : "Buscando Destinos..."}
           </span>
         ) : destination ? (
-          "✨ Gerar Roteiro Personalizado"
+          "✨ Gerar roteiro personalizado"
         ) : (
-          "🔍 Descobrir Destinos Ideais"
+          <div className="flex gap-3">
+            <span>🔍</span>
+            <span>Descobrir destinos ideais</span>
+          </div>
         )}
       </Button>
     </div>
