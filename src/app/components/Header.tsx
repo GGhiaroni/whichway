@@ -1,80 +1,125 @@
+"use client";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useClerk, useUser } from "@clerk/nextjs";
+import { LogOut, TrendingUp, User } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Logomarca from "./Logomarca";
 
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-
 export default function Header() {
+  const { isSignedIn, user } = useUser();
+  const { signOut } = useClerk();
+  const pathname = usePathname();
+
+  const isActive = (path: string) => pathname === path;
+
   return (
-    <header className="fixed top-0 z-50 w-full border-b border-brand-primary/10 bg-brand-cream/80 backdrop-blur-md">
-      <div className="container mx-auto flex h-16 items-center justify-between px-6">
+    <header className="fixed top-0 left-0 w-full bg-brand-cream backdrop-blur-md border-b border-stone-100 z-50">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
         <Logomarca />
 
-        <nav className="hidden md:flex items-center gap-4">
-          <Link href="/sign-in">
-            <Button
-              variant="ghost"
-              className="font-semibold text-brand-dark hover:bg-brand-primary/10 hover:text-brand-primary cursor-pointer"
-            >
-              Já sou cadastrado
-            </Button>
+        <nav className="hidden md:flex items-center gap-8">
+          <Link
+            href="/em-alta"
+            className={`text-sm font-medium transition-colors hover:text-brand-primary ${isActive("/em-alta") ? "text-brand-primary" : "text-gray-600"}`}
+          >
+            Em Alta
           </Link>
-
-          <Link href="/sign-up">
-            <Button className="bg-brand-primary font-semibold text-white shadow-md hover:bg-brand-dark cursor-pointer">
-              Criar conta grátis
-            </Button>
+          <Link
+            href="/criar-roteiro"
+            className={`text-sm font-medium transition-colors hover:text-brand-primary ${isActive("/criar-roteiro") ? "text-brand-primary" : "text-gray-600"}`}
+          >
+            Criar Roteiro
+          </Link>
+          <Link
+            href="/comunidade"
+            className="text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors"
+          >
+            Comunidade
           </Link>
         </nav>
 
-        <div className="md:hidden flex items-center">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-brand-primary hover:bg-brand-primary/10 hover:text-brand-dark cursor-pointer"
+        <div className="flex items-center gap-4">
+          {isSignedIn ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <div className="cursor-pointer">
+                  <Avatar className="w-9 h-9 border border-gray-200 transition-all hover:ring-2 hover:ring-brand-primary/20">
+                    <AvatarImage
+                      src={user?.imageUrl}
+                      alt={user?.fullName || "User"}
+                    />
+                    <AvatarFallback className="bg-brand-primary text-white">
+                      {user?.firstName?.charAt(0) || "U"}
+                    </AvatarFallback>
+                  </Avatar>
+                </div>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent
+                align="end"
+                className="w-56 p-2 bg-white rounded-xl shadow-xl border-stone-100"
               >
-                <Menu className="h-6 w-6" />
-                <span className="sr-only">Abrir menu</span>
-              </Button>
-            </SheetTrigger>
+                <div className="px-2 py-1.5 mb-1">
+                  <p className="font-bold text-sm text-brand-dark">
+                    {user?.fullName}
+                  </p>
+                  <p className="text-xs text-gray-400 truncate">
+                    {user?.primaryEmailAddress?.emailAddress}
+                  </p>
+                </div>
 
-            <SheetContent
-              side="right"
-              className="w-[300px] bg-brand-cream border-brand-primary/20 flex flex-col"
-            >
-              <SheetHeader className="text-left">
-                <SheetTitle className="font-serif text-2xl text-brand-primary border-b border-brand-primary/10 pb-4">
-                  WhichWay
-                </SheetTitle>
-              </SheetHeader>
+                <DropdownMenuSeparator className="bg-gray-100" />
 
-              <div className="mt-6 flex flex-col items-start gap-2">
-                <Link href="/sign-in" className="w-full">
-                  <Button
-                    variant="ghost"
-                    className="w-full justify-start text-lg font-normal text-brand-dark hover:bg-brand-primary/10 hover:text-brand-primary pl-0"
-                  >
-                    Já sou cadastrado
-                  </Button>
+                <Link href="/meu-perfil">
+                  <DropdownMenuItem className="cursor-pointer rounded-lg focus:bg-stone-50 text-gray-600 focus:text-brand-primary py-2">
+                    <User className="w-4 h-4 mr-2" />
+                    Meu Perfil
+                  </DropdownMenuItem>
                 </Link>
 
-                <Link href="/sign-up" className="w-full">
-                  <Button className="w-full justify-start text-lg font-semibold bg-brand-primary text-white hover:bg-brand-dark shadow-md mt-2">
-                    Criar conta grátis
-                  </Button>
+                <Link href="/criar-roteiro">
+                  <DropdownMenuItem className="cursor-pointer rounded-lg focus:bg-stone-50 text-gray-600 focus:text-brand-primary py-2">
+                    <TrendingUp className="w-4 h-4 mr-2" />
+                    Novo Roteiro
+                  </DropdownMenuItem>
                 </Link>
-              </div>
-            </SheetContent>
-          </Sheet>
+
+                <DropdownMenuSeparator className="bg-gray-100" />
+
+                <DropdownMenuItem
+                  onClick={() => signOut({ redirectUrl: "/" })}
+                  className="cursor-pointer rounded-lg focus:bg-red-50 text-red-500 focus:text-red-600 py-2"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sair
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <div className="flex items-center gap-4">
+              <Link
+                href="/sign-in"
+                className="text-sm font-bold text-brand-primary hover:text-brand-dark md:block"
+              >
+                Entrar
+              </Link>
+              <Link href="/sign-up">
+                <Button className="rounded-full bg-brand-primary hover:bg-brand-dark text-white shadow-lg shadow-brand-primary/20 px-6">
+                  Cadastrar
+                </Button>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </header>
