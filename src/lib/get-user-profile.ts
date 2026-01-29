@@ -37,7 +37,7 @@ export default async function getUserProfile() {
       (p) => p.status === PlaceStatus.VISITED,
     );
 
-    const whishlistPlaces = dbUser.places.filter(
+    const wishlistPlaces = dbUser.places.filter(
       (p) => p.status === PlaceStatus.WISHLIST,
     );
 
@@ -46,7 +46,7 @@ export default async function getUserProfile() {
       user: {
         ...dbUser,
         visitedPlaces,
-        whishlistPlaces,
+        wishlistPlaces,
       },
     };
   } catch (error) {
