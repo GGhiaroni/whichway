@@ -128,7 +128,7 @@ export default async function RoteiroPage({ params }: PageProps) {
       </div>
 
       <div className="max-w-4xl mx-auto px-6 -mt-10 relative z-20">
-        <div className="bg-white p-8 md:p-10 rounded-3xl shadow-xl shadow-black/5 mb-12 border border-brand-cream/20">
+        <div className="bg-white mt-16 p-8 md:p-10 rounded-3xl shadow-xl shadow-black/5 mb-12 border border-brand-cream/20">
           <div className="flex items-start gap-4">
             <span className="text-4xl">✨</span>
             <div>
