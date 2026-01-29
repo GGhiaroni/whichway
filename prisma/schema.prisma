@@ -3,9 +3,13 @@ generator client {
 }
 
 datasource db {
-  
-  provider = "postgresql" 
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+enum PlaceStatus {
+  VISITED   
+  WISHLIST  
 }
 
 model User {
@@ -15,11 +19,51 @@ model User {
   firstName String?
   lastName  String?
   imageUrl  String?
-  trips     Trip[]
+  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  
+  interests String[]    @default([]) 
+  places    UserPlace[] 
+  trips     Trip[]      
 }
 
+model UserPlace {
+  id        String   @id @default(uuid())
+  
+  
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  
+  name      String   
+  country   String   
+  imageUrl  String?  
+  
+  
+  status    PlaceStatus 
+  visitDate DateTime?   
+  
+  createdAt DateTime @default(now())
+
+  @@index([userId]) 
+}
+
+model Trip {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id]) 
+  destination String
+  startDate   DateTime
+  endDate     DateTime
+  budget      String
+  pace        String
+  travelers   Json     
+  interests   String[] 
+  itinerary   Json       
+  createdAt   DateTime @default(now())
+}
 
 model FeaturedDestination {
   id          String   @id @default(uuid())
@@ -45,8 +89,8 @@ model FeaturedDestination {
   peakSeasonDesc String 
   offSeasonValue String 
   offSeasonDesc String 
-   highlights  Highlight[]
-  tips Tip[]
+  highlights  Highlight[]
+  tips        Tip[]
 }
 
 model Highlight {
@@ -62,19 +106,4 @@ model Tip {
   text String
   featuredDestinationId String
   featuredDestination   FeaturedDestination @relation(fields: [featuredDestinationId], references: [id], onDelete: Cascade)
-}
-
-model Trip {
-  id          String   @id @default(uuid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id]) 
-  destination String
-  startDate   DateTime
-  endDate     DateTime
-  budget      String
-  pace        String
-  travelers   Json     
-  interests   String[] 
-  itinerary   Json       
-  createdAt   DateTime @default(now())
 }
