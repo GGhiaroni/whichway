@@ -1,3 +1,4 @@
+import InterestsModal from "@/app/components/InterestsModal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import getUserProfile from "@/lib/get-user-profile";
@@ -157,9 +158,7 @@ export default async function ProfilePage() {
                 </p>
               )}
 
-              <button className="px-4 py-2 rounded-full text-sm font-bold border border-dashed border-gray-300 text-gray-400 hover:border-brand-primary hover:text-brand-primary transition-all flex items-center gap-1">
-                <Plus className="w-4 h-4" /> Gerenciar
-              </button>
+              <InterestsModal currentInterests={user.interests} />
             </div>
           </div>
         </section>
