@@ -1,3 +1,4 @@
+import RoteiroActions from "@/app/components/RoteiroActions";
 import { prisma } from "@/lib/prisma";
 import { getUnsplashPhoto } from "@/lib/unsplash";
 import { auth } from "@clerk/nextjs/server";
@@ -229,6 +230,8 @@ function ActivityItem({
           {data.descricao}
         </p>
       </div>
+
+      <RoteiroActions />
     </div>
   );
 }
