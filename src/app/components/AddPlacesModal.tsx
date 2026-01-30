@@ -153,7 +153,9 @@ export default function AddPlaceModal({ type, children }: AddPlaceModalProps) {
             size="icon"
             className="rounded-full hover:bg-green-50 hover:text-green-600"
           >
-            <Plus className="w-5 h-5" />
+            <div className="rounded-full p-1 bg-brand-primary">
+              <Plus className="w-5 h-5 text-brand-cream" />
+            </div>
           </Button>
         ) : (
           <Button
@@ -161,7 +163,9 @@ export default function AddPlaceModal({ type, children }: AddPlaceModalProps) {
             size="icon"
             className="rounded-full hover:bg-rose-50 hover:text-rose-500"
           >
-            <Plus className="w-5 h-5" />
+            <div className="rounded-full p-1 bg-brand-primary">
+              <Plus className="w-5 h-5 text-brand-cream" />
+            </div>
           </Button>
         )}
       </DialogTrigger>

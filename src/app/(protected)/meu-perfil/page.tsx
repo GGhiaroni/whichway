@@ -1,5 +1,6 @@
 import AddPlaceModal from "@/app/components/AddPlacesModal";
 import InterestsModal from "@/app/components/InterestsModal";
+import PlacesCarousel from "@/app/components/PlacesCarousel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import getUserProfile from "@/lib/get-user-profile";
@@ -9,7 +10,6 @@ import { ptBR } from "date-fns/locale";
 import {
   Calendar,
   CheckCircle2,
-  Globe2,
   Heart,
   LucideIcon,
   Mail,
@@ -247,81 +247,24 @@ export default async function ProfilePage() {
             <AddPlaceModal type={PlaceStatus.VISITED} />
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {user.visitedPlaces.map((place) => (
-              <div
-                key={place.id}
-                className="relative aspect-square rounded-2xl overflow-hidden group cursor-pointer"
-              >
-                <Image
-                  src={place.imageUrl || "/placeholder-place.jpg"}
-                  alt={place.name}
-                  width={300}
-                  height={300}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-90" />
-                <div className="absolute bottom-3 left-3 text-white">
-                  <p className="font-bold text-sm md:text-base leading-tight">
-                    {place.name}
-                  </p>
-                  <p className="text-[10px] uppercase tracking-wider opacity-80">
-                    {place.country}
-                  </p>
-                </div>
-              </div>
-            ))}
-
-            <AddPlaceModal type={PlaceStatus.VISITED}>
-              <div className="aspect-square rounded-2xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 hover:border-green-500 hover:text-green-500 hover:bg-green-50 transition-all cursor-pointer">
-                <Plus className="w-8 h-8 mb-2" />
-                <span className="text-xs font-bold">Adicionar</span>
-              </div>
-            </AddPlaceModal>
-          </div>
+          <PlacesCarousel
+            places={user.visitedPlaces}
+            type={PlaceStatus.VISITED}
+          />
         </section>
 
         <section className="pb-10">
           <div className="flex items-center justify-between mb-4 px-2">
             <h2 className="text-xl font-bold text-brand-dark flex items-center gap-2">
-              <Heart className="w-5 h-5 text-rose-500" /> Desejo Visitar
+              <Heart className="w-5 h-5 text-brand-dark" /> Desejo Visitar
             </h2>
             <AddPlaceModal type={PlaceStatus.WISHLIST} />
           </div>
 
-          <div className="flex overflow-x-auto gap-4 -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
-            {user.wishlistPlaces.map((place) => (
-              <div
-                key={place.id}
-                className="min-w-[200px] h-[280px] rounded-2xl overflow-hidden relative group cursor-pointer"
-              >
-                <Image
-                  src={place.imageUrl || "/placeholder-place.jpg"}
-                  alt={place.name}
-                  width={300}
-                  height={400}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
-                <div className="absolute top-3 right-3 bg-white/30 backdrop-blur-md p-1.5 rounded-full text-white">
-                  <Heart className="w-4 h-4 fill-white" />
-                </div>
-                <div className="absolute bottom-4 left-4 text-white">
-                  <p className="text-xs font-light uppercase tracking-widest mb-1">
-                    {place.country}
-                  </p>
-                  <h4 className="text-xl font-serif">{place.name}</h4>
-                </div>
-              </div>
-            ))}
-
-            <AddPlaceModal type={PlaceStatus.WISHLIST}>
-              <div className="min-w-[200px] h-[280px] rounded-2xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 hover:border-rose-500 hover:text-rose-500 hover:bg-rose-50 transition-all cursor-pointer">
-                <Globe2 className="w-8 h-8 mb-2" />
-                <span className="text-sm font-bold">Novo Sonho</span>
-              </div>
-            </AddPlaceModal>
-          </div>
+          <PlacesCarousel
+            places={user.wishlistPlaces}
+            type={PlaceStatus.WISHLIST}
+          />
         </section>
       </main>
     </div>
