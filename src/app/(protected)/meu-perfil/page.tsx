@@ -1,7 +1,9 @@
+import AddPlaceModal from "@/app/components/AddPlacesModal";
 import InterestsModal from "@/app/components/InterestsModal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import getUserProfile from "@/lib/get-user-profile";
+import { PlaceStatus } from "@prisma/client";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import {
@@ -242,13 +244,7 @@ export default async function ProfilePage() {
             <h2 className="text-xl font-bold text-brand-dark flex items-center gap-2">
               <CheckCircle2 className="w-5 h-5 text-green-600" /> Onde já estive
             </h2>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="rounded-full hover:bg-green-50 hover:text-green-600"
-            >
-              <Plus className="w-5 h-5" />
-            </Button>
+            <AddPlaceModal type={PlaceStatus.VISITED} />
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -276,10 +272,12 @@ export default async function ProfilePage() {
               </div>
             ))}
 
-            <div className="aspect-square rounded-2xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 hover:border-green-500 hover:text-green-500 hover:bg-green-50 transition-all cursor-pointer">
-              <Plus className="w-8 h-8 mb-2" />
-              <span className="text-xs font-bold">Adicionar</span>
-            </div>
+            <AddPlaceModal type={PlaceStatus.VISITED}>
+              <div className="aspect-square rounded-2xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 hover:border-green-500 hover:text-green-500 hover:bg-green-50 transition-all cursor-pointer">
+                <Plus className="w-8 h-8 mb-2" />
+                <span className="text-xs font-bold">Adicionar</span>
+              </div>
+            </AddPlaceModal>
           </div>
         </section>
 
@@ -288,13 +286,7 @@ export default async function ProfilePage() {
             <h2 className="text-xl font-bold text-brand-dark flex items-center gap-2">
               <Heart className="w-5 h-5 text-rose-500" /> Desejo Visitar
             </h2>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="rounded-full hover:bg-rose-50 hover:text-rose-500"
-            >
-              <Plus className="w-5 h-5" />
-            </Button>
+            <AddPlaceModal type={PlaceStatus.WISHLIST} />
           </div>
 
           <div className="flex overflow-x-auto gap-4 -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
@@ -323,10 +315,12 @@ export default async function ProfilePage() {
               </div>
             ))}
 
-            <div className="min-w-[200px] h-[280px] rounded-2xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 hover:border-rose-500 hover:text-rose-500 hover:bg-rose-50 transition-all cursor-pointer">
-              <Globe2 className="w-8 h-8 mb-2" />
-              <span className="text-sm font-bold">Novo Sonho</span>
-            </div>
+            <AddPlaceModal type={PlaceStatus.WISHLIST}>
+              <div className="min-w-[200px] h-[280px] rounded-2xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 hover:border-rose-500 hover:text-rose-500 hover:bg-rose-50 transition-all cursor-pointer">
+                <Globe2 className="w-8 h-8 mb-2" />
+                <span className="text-sm font-bold">Novo Sonho</span>
+              </div>
+            </AddPlaceModal>
           </div>
         </section>
       </main>
