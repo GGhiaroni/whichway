@@ -19,6 +19,8 @@ function removeAccentsForUnsplashQuery(str: string) {
 }
 
 export default async function addPlacesUserProfile(data: AddPlaceParams) {
+  const placeholder = "/placeholder-place.jpg";
+
   try {
     const clerkUser = await currentUser();
 
@@ -53,7 +55,7 @@ export default async function addPlacesUserProfile(data: AddPlaceParams) {
     const finalImageUrl =
       photoData?.regular ||
       (await getUnsplashPhoto(`${cleanCity} ${cleanCountry}`))?.regular ||
-      null;
+      placeholder;
 
     await prisma.userPlace.create({
       data: {
