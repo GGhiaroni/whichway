@@ -117,12 +117,22 @@ export default function AddPlaceModal({ type, children }: AddPlaceModalProps) {
       });
 
       if (result.success) {
-        toast.success("Lugar adicionado com sucesso! 🌍");
+        const successMessage =
+          result.message || "Lugar adicionado com sucesso! 🌍";
+
+        toast.success(successMessage);
+
         setOpen(false);
         setQuery("");
         setResults([]);
       } else {
-        toast.error("Erro ao adicionar lugar.");
+        const errorMessage = result.error || "Erro ao adicionar lugar.";
+
+        toast.error(errorMessage);
+
+        setOpen(false);
+        setQuery("");
+        setResults([]);
       }
     });
   };
