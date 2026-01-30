@@ -14,6 +14,10 @@ interface AddPlaceParams {
   visitDate?: Date;
 }
 
+function removeAccentsForUnsplashQuery(str: string) {
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
 export default async function addPlacesUserProfile(data: AddPlaceParams) {
   try {
     const clerkUser = await currentUser();
@@ -37,18 +41,26 @@ export default async function addPlacesUserProfile(data: AddPlaceParams) {
       };
     }
 
-    const photoData = await getUnsplashPhoto(
-      `${data.name} ${data.country} travel`,
-    );
+    const cleanCity = removeAccentsForUnsplashQuery(data.name);
+    const cleanCountry = removeAccentsForUnsplashQuery(data.country);
 
-    const imageUrl = photoData?.regular || null;
+    const searchQuery = `${cleanCity} ${cleanCountry} tourism iconic famous landmark`;
+
+    console.log("🔍 Buscando no Unsplash:", searchQuery);
+
+    const photoData = await getUnsplashPhoto(searchQuery);
+
+    const finalImageUrl =
+      photoData?.regular ||
+      (await getUnsplashPhoto(`${cleanCity} ${cleanCountry}`))?.regular ||
+      null;
 
     await prisma.userPlace.create({
       data: {
         user: { connect: { email } },
         name: data.name,
         country: data.country,
-        imageUrl: imageUrl,
+        imageUrl: finalImageUrl,
         status: data.type,
         visitDate: data.visitDate,
       },
