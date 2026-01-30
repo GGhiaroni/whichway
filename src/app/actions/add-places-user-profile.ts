@@ -31,9 +31,7 @@ export default async function addPlacesUserProfile(data: AddPlaceParams) {
     const email = clerkUser.emailAddresses[0].emailAddress;
 
     const dbUser = await prisma.user.findUnique({
-      where: {
-        email,
-      },
+      where: { email },
     });
 
     if (!dbUser) {
@@ -41,6 +39,48 @@ export default async function addPlacesUserProfile(data: AddPlaceParams) {
         success: false,
         error: "Usuário não encontrado no banco de dados.",
       };
+    }
+
+    const existingPlace = await prisma.userPlace.findFirst({
+      where: {
+        userId: dbUser.id,
+        name: {
+          equals: data.name,
+          mode: "insensitive",
+        },
+      },
+    });
+
+    if (existingPlace) {
+      if (existingPlace.status === data.type) {
+        return { success: false, error: "Você já adicionou este local!" };
+      }
+
+      if (
+        existingPlace.status === PlaceStatus.VISITED &&
+        data.type === PlaceStatus.WISHLIST
+      ) {
+        return {
+          success: false,
+          error: "Você já visitou esse lugar! Ele já consta nos visitados.",
+        };
+      }
+
+      if (
+        existingPlace.status === PlaceStatus.WISHLIST &&
+        data.type === PlaceStatus.VISITED
+      ) {
+        await prisma.userPlace.update({
+          where: { id: existingPlace.id },
+          data: {
+            status: PlaceStatus.VISITED,
+            visitDate: data.visitDate || new Date(),
+          },
+        });
+
+        revalidatePath("/meu-perfil");
+        return { success: true, message: "Lugar movido para Visitados!" };
+      }
     }
 
     const cleanCity = removeAccentsForUnsplashQuery(data.name);
