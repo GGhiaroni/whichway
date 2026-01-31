@@ -1,7 +1,7 @@
 import AddPlaceModal from "@/app/components/AddPlacesModal";
 import InterestsModal from "@/app/components/InterestsModal";
 import PlacesCarousel from "@/app/components/PlacesCarousel";
-import { Badge } from "@/components/ui/badge";
+import TripsCarousel from "@/app/components/TripsCarousel";
 import { Button } from "@/components/ui/button";
 import getUserProfile from "@/lib/get-user-profile";
 import { PlaceStatus } from "@prisma/client";
@@ -13,7 +13,6 @@ import {
   Heart,
   LucideIcon,
   Mail,
-  MapPin,
   Plane,
   Plus,
   Settings,
@@ -178,55 +177,7 @@ export default async function ProfilePage() {
           </div>
 
           {user.trips.length > 0 ? (
-            <div className="flex overflow-x-auto pb-6 gap-4 -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
-              {user.trips.map((trip) => {
-                const status = getTripStatus(
-                  new Date(trip.startDate),
-                  new Date(trip.endDate),
-                );
-
-                const tripTitle =
-                  (trip.itinerary as unknown as ItineraryJSON)?.titulo ||
-                  `Viagem para ${trip.destination}`;
-
-                return (
-                  <Link href={`/roteiro/${trip.id}`} key={trip.id}>
-                    <div className="min-w-[280px] md:min-w-[320px] bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-stone-100 group cursor-pointer h-full">
-                      <div className="h-40 overflow-hidden relative bg-gray-200">
-                        <Image
-                          src={`https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=800&q=80`}
-                          alt={trip.destination}
-                          width={400}
-                          height={200}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                        <div className="absolute top-3 right-3">
-                          <Badge
-                            className={`${status.color} text-white border-none`}
-                          >
-                            {status.label}
-                          </Badge>
-                        </div>
-                      </div>
-                      <div className="p-4">
-                        <h3 className="font-bold text-lg text-brand-dark truncate">
-                          {tripTitle}
-                        </h3>
-                        <p className="text-sm text-gray-500 flex items-center gap-1 mt-1">
-                          <MapPin className="w-3 h-3" /> {trip.destination}
-                        </p>
-                        <p className="text-xs text-gray-400 mt-3 font-medium bg-gray-50 inline-block px-2 py-1 rounded-md">
-                          📅 {format(new Date(trip.startDate), "dd MMM")} -{" "}
-                          {format(new Date(trip.endDate), "dd MMM, yyyy", {
-                            locale: ptBR,
-                          })}
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
+            <TripsCarousel trips={user.trips} />
           ) : (
             <div className="bg-white rounded-3xl p-8 border border-dashed border-stone-200 text-center">
               <p className="text-gray-500 mb-4">
