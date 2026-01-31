@@ -60,6 +60,7 @@ model Trip {
   interests   String[] 
   itinerary   Json       
   createdAt   DateTime @default(now())
+  imageUrl    String? @db.Text
 }
 
 model FeaturedDestination {
