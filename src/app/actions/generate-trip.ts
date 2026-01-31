@@ -2,6 +2,7 @@
 
 import { GEMINI_MODEL_FLASH, genAI } from "@/lib/gemini";
 import { prisma } from "@/lib/prisma";
+import { getUnsplashPhoto } from "@/lib/unsplash";
 import { currentUser } from "@clerk/nextjs/server";
 
 interface GenerateTripsParams {
@@ -77,6 +78,17 @@ export default async function generateTrip(data: GenerateTripsParams) {
     const text = responseText.replace(/```json|```/g, "").trim();
     const itineraryJson = JSON.parse(text);
 
+    let tripImageUrl = null;
+
+    try {
+      const query = `${data.destination} tourism famous landmark view`;
+      const photoData = await getUnsplashPhoto(query);
+
+      tripImageUrl = photoData?.regular || null;
+    } catch (error) {
+      console.error("Falha ao buscar imagem do Unsplash:", error);
+    }
+
     const trip = await prisma.trip.create({
       data: {
         userId: dbUser.id,
@@ -88,6 +100,7 @@ export default async function generateTrip(data: GenerateTripsParams) {
         travelers: data.travelers,
         interests: data.interests,
         itinerary: itineraryJson,
+        imageUrl: tripImageUrl,
       },
     });
 
