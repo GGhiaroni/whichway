@@ -19,6 +19,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import SuggestionSkeleton from "./SuggestionSkeleton";
 
 interface Suggestion {
   cidade: string;
@@ -43,6 +44,10 @@ export default function StepSummary() {
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const router = useRouter();
 
+  if (isLoading && !destination) {
+    return <SuggestionSkeleton />;
+  }
+
   const createFinalTrip = async (targetDestination: string) => {
     if (!dates?.from || !dates?.to || !budget || !pace) return;
 
@@ -59,10 +64,8 @@ export default function StepSummary() {
 
       if (result.success && result.tripId) {
         toast.success("Roteiro criado com sucesso! 🚀");
-
-        reset();
-
         router.push(`/roteiro/${result.tripId}`);
+        reset();
       } else {
         throw new Error(result.error || "Erro desconhecido");
       }

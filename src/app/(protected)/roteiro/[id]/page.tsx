@@ -208,9 +208,29 @@ function ActivityItem({
 }: {
   icon: LucideIcon;
   period: string;
-  data: ItineraryActivity;
+  data: ItineraryActivity | undefined;
   color: string;
 }) {
+  if (!data || !data.atividade) {
+    return (
+      <div className="flex flex-col md:flex-row gap-4 md:gap-6 relative z-10 opacity-70">
+        <div className="flex items-center gap-4 md:block shrink-0">
+          <div className="w-16 h-16 md:w-16 md:h-16 rounded-2xl bg-stone-50 border-4 border-[#FDF8F3] flex flex-col items-center justify-center shadow-sm z-10 relative grayscale">
+            <Icon className={`w-6 h-6 text-gray-400 mb-1`} />
+            <span className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">
+              {period}
+            </span>
+          </div>
+        </div>
+        <div className="flex-1 bg-gray-50/50 p-5 rounded-2xl border border-dashed border-gray-200 flex items-center">
+          <p className="text-gray-400 text-sm italic font-medium">
+            Tempo livre / Deslocamento
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col md:flex-row gap-4 md:gap-6 relative z-10">
       <div className="flex items-center gap-4 md:block shrink-0">
