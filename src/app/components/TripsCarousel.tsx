@@ -6,6 +6,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { PLACEHOLDER_IMAGES } from "@/lib/placeholders";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { MapPin, Plus } from "lucide-react";
@@ -30,6 +31,12 @@ interface TripsCarouselProps {
 }
 
 export default function TripsCarousel({ trips }: TripsCarouselProps) {
+  const getFallbackImage = (id: string) => {
+    const sum = id.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const index = sum % PLACEHOLDER_IMAGES.length;
+    return PLACEHOLDER_IMAGES[index];
+  };
+
   const getTripStatus = (startDate: Date, endDate: Date) => {
     const now = new Date();
     const start = new Date(startDate);
@@ -53,9 +60,12 @@ export default function TripsCarousel({ trips }: TripsCarouselProps) {
         <CarouselContent className="-ml-4">
           {trips.map((trip) => {
             const status = getTripStatus(trip.startDate, trip.endDate);
+
             const tripTitle =
               (trip.itinerary as ItineraryJSON)?.titulo ||
               `Viagem para ${trip.destination}`;
+
+            const fallbackSrc = getFallbackImage(trip.id);
 
             return (
               <CarouselItem
@@ -66,7 +76,7 @@ export default function TripsCarousel({ trips }: TripsCarouselProps) {
                   <div className="min-w-full bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-stone-100 group cursor-pointer h-full select-none">
                     <div className="h-40 overflow-hidden relative bg-gray-200">
                       <Image
-                        src={trip.imageUrl || "/placeholder-place.jpg"}
+                        src={trip.imageUrl || fallbackSrc}
                         alt={trip.destination}
                         width={400}
                         height={200}
