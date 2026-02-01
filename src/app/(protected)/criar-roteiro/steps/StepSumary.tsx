@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import SuggestionSkeleton from "./SuggestionSkeleton";
+import TransitionSkeleton from "./TransitionSkeleton";
 
 interface Suggestion {
   cidade: string;
@@ -46,6 +47,10 @@ export default function StepSummary() {
 
   if (isLoading && !destination) {
     return <SuggestionSkeleton />;
+  }
+
+  if (isLoading && destination) {
+    return <TransitionSkeleton />;
   }
 
   const createFinalTrip = async (targetDestination: string) => {
