@@ -14,7 +14,7 @@ export default async function getUserProfile() {
 
     const email = clerkUser.emailAddresses[0].emailAddress;
 
-    const dbUser = await prisma.user.findUnique({
+    let dbUser = await prisma.user.findUnique({
       where: {
         email,
       },
@@ -30,14 +30,30 @@ export default async function getUserProfile() {
     });
 
     if (!dbUser) {
-      return { success: false, error: "Usuário não encontrado no banco." };
+      console.log("🛠️ Usuário fantasma detectado. Recriando no banco...");
+
+      dbUser = await prisma.user.create({
+        data: {
+          clerkId: clerkUser.id,
+          email: email,
+          firstName: clerkUser.firstName,
+          lastName: clerkUser.lastName,
+          imageUrl: clerkUser.imageUrl,
+        },
+        include: {
+          trips: true,
+          places: true,
+        },
+      });
     }
 
-    const visitedPlaces = dbUser.places.filter(
+    const allPlaces = dbUser.places || [];
+
+    const visitedPlaces = allPlaces.filter(
       (p) => p.status === PlaceStatus.VISITED,
     );
 
-    const wishlistPlaces = dbUser.places.filter(
+    const wishlistPlaces = allPlaces.filter(
       (p) => p.status === PlaceStatus.WISHLIST,
     );
 
@@ -50,7 +66,7 @@ export default async function getUserProfile() {
       },
     };
   } catch (error) {
-    console.error("Erro ao buscar prefil:", error);
+    console.error("Erro crítico ao buscar perfil:", error);
     return { success: false, error: "Erro interno ao buscar dados." };
   }
 }

@@ -6,7 +6,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { getUnsplashPhoto } from "@/lib/unsplash";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { MapPin, Plus } from "lucide-react";
@@ -23,13 +22,12 @@ interface Trip {
   startDate: Date;
   endDate: Date;
   itinerary: unknown;
+  imageUrl: string | null;
 }
 
 interface TripsCarouselProps {
   trips: Trip[];
 }
-
-
 
 export default function TripsCarousel({ trips }: TripsCarouselProps) {
   const getTripStatus = (startDate: Date, endDate: Date) => {
@@ -53,12 +51,12 @@ export default function TripsCarousel({ trips }: TripsCarouselProps) {
         className="w-full"
       >
         <CarouselContent className="-ml-4">
-                  {trips.map((trip) => {
-                      const status = getTripStatus(trip.startDate, trip.endDate);
-                      const tripTitle =
-                          (trip.itinerary as ItineraryJSON)?.titulo ||
-                          `Viagem para ${trip.destination}`;
-                      
+          {trips.map((trip) => {
+            const status = getTripStatus(trip.startDate, trip.endDate);
+            const tripTitle =
+              (trip.itinerary as ItineraryJSON)?.titulo ||
+              `Viagem para ${trip.destination}`;
+
             return (
               <CarouselItem
                 key={trip.id}
@@ -68,7 +66,7 @@ export default function TripsCarousel({ trips }: TripsCarouselProps) {
                   <div className="min-w-full bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-stone-100 group cursor-pointer h-full select-none">
                     <div className="h-40 overflow-hidden relative bg-gray-200">
                       <Image
-                        src=
+                        src={trip.imageUrl || "/placeholder-place.jpg"}
                         alt={trip.destination}
                         width={400}
                         height={200}
