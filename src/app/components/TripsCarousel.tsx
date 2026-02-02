@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import {
   Carousel,
   CarouselContent,
@@ -12,6 +11,7 @@ import { ptBR } from "date-fns/locale";
 import { MapPin, Plus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import DeleteTripDialog from "./DeleteTripDialog";
 
 interface ItineraryJSON {
   titulo?: string;
@@ -72,41 +72,43 @@ export default function TripsCarousel({ trips }: TripsCarouselProps) {
                 key={trip.id}
                 className="pl-4 basis-[85%] md:basis-[45%] lg:basis-[30%]"
               >
-                <Link href={`/roteiro/${trip.id}`}>
-                  <div className="min-w-full bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-stone-100 group cursor-pointer h-full select-none">
-                    <div className="h-40 overflow-hidden relative bg-gray-200">
-                      <Image
-                        src={trip.imageUrl || fallbackSrc}
-                        alt={trip.destination}
-                        width={400}
-                        height={200}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      <div className="absolute top-3 right-3">
-                        <Badge
-                          className={`${status.color} text-white border-none`}
-                        >
-                          {status.label}
-                        </Badge>
+                <div className="relative h-full group">
+                  <div className="absolute top-2 right-2 z-50">
+                    <DeleteTripDialog
+                      id={trip.id}
+                      placeName={trip.destination}
+                    />
+                  </div>
+
+                  <Link href={`/roteiro/${trip.id}`}>
+                    <div className="min-w-full bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-stone-100 group cursor-pointer h-full select-none">
+                      <div className="h-40 overflow-hidden relative bg-gray-200">
+                        <Image
+                          src={trip.imageUrl || fallbackSrc}
+                          alt={trip.destination}
+                          width={400}
+                          height={200}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      </div>
+
+                      <div className="p-4">
+                        <h3 className="font-bold text-lg text-brand-dark truncate">
+                          {tripTitle}
+                        </h3>
+                        <p className="text-sm text-gray-500 flex items-center gap-1 mt-1">
+                          <MapPin className="w-3 h-3" /> {trip.destination}
+                        </p>
+                        <p className="text-xs text-gray-400 mt-3 font-medium bg-gray-50 inline-block px-2 py-1 rounded-md">
+                          📅 {format(new Date(trip.startDate), "dd MMM")} -{" "}
+                          {format(new Date(trip.endDate), "dd MMM, yyyy", {
+                            locale: ptBR,
+                          })}
+                        </p>
                       </div>
                     </div>
-
-                    <div className="p-4">
-                      <h3 className="font-bold text-lg text-brand-dark truncate">
-                        {tripTitle}
-                      </h3>
-                      <p className="text-sm text-gray-500 flex items-center gap-1 mt-1">
-                        <MapPin className="w-3 h-3" /> {trip.destination}
-                      </p>
-                      <p className="text-xs text-gray-400 mt-3 font-medium bg-gray-50 inline-block px-2 py-1 rounded-md">
-                        📅 {format(new Date(trip.startDate), "dd MMM")} -{" "}
-                        {format(new Date(trip.endDate), "dd MMM, yyyy", {
-                          locale: ptBR,
-                        })}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
+                  </Link>
+                </div>
               </CarouselItem>
             );
           })}

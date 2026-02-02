@@ -15,17 +15,17 @@ import { Button } from "@/components/ui/button";
 import { Loader2, Trash2, X } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { deletePlace } from "../actions/delete-item";
+import { deleteTrip } from "../actions/delete-item";
 
-interface DeletePlaceDialogProps {
+interface DeleteTripDialogProps {
   id: string;
-  name: string;
+  placeName: string;
 }
 
-export default function DeletePlaceDialog({
+export default function DeleteTripDialog({
   id,
-  name,
-}: DeletePlaceDialogProps) {
+  placeName,
+}: DeleteTripDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -33,7 +33,7 @@ export default function DeletePlaceDialog({
     setIsDeleting(true);
 
     try {
-      const result = await deletePlace(id);
+      const result = await deleteTrip(id);
 
       if (result.success) {
         toast.success("Local removido com sucesso!");
@@ -52,10 +52,6 @@ export default function DeletePlaceDialog({
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogTrigger asChild>
         <Button
-          onClick={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-          }}
           variant="ghost"
           size="icon"
           className="h-8 w-8 text-brand-primary hover:text-brand-dark hover:bg-red-50 transition-colors absolute top-2 right-2 z-10 bg-white/80 backdrop-blur-sm rounded-full shadow-sm"
@@ -74,11 +70,12 @@ export default function DeletePlaceDialog({
 
         <AlertDialogHeader>
           <AlertDialogTitle className="text-brand-dark text-xl text-left">
-            Remover {name}?
+            Remover roteiro para {placeName}?
           </AlertDialogTitle>
           <AlertDialogDescription className="text-gray-600 text-left text-base">
-            Esta ação não pode ser desfeita. Isso excluirá permanentemente
-            <span className="font-bold text-brand-dark"> {name} </span>
+            Esta ação não pode ser desfeita. Isso excluirá permanentemente o
+            roteiro para
+            <span className="font-bold text-brand-dark"> {placeName} </span>
             da sua lista.
           </AlertDialogDescription>
         </AlertDialogHeader>
