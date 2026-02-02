@@ -1,4 +1,5 @@
 import AddPlaceModal from "@/app/components/AddPlacesModal";
+import EditProfileDialog from "@/app/components/EditProfileDialog";
 import InterestsModal from "@/app/components/InterestsModal";
 import PlacesCarousel from "@/app/components/PlacesCarousel";
 import TripsCarousel from "@/app/components/TripsCarousel";
@@ -22,10 +23,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-interface ItineraryJSON {
-  titulo?: string;
-}
-
 export default async function ProfilePage() {
   const { success, user, error } = await getUserProfile();
 
@@ -33,14 +30,6 @@ export default async function ProfilePage() {
     console.error(error);
     redirect("/sign-in");
   }
-
-  const getTripStatus = (startDate: Date, endDate: Date) => {
-    const now = new Date();
-    if (now > endDate) return { label: "Concluída", color: "bg-green-500" };
-    if (now >= startDate && now <= endDate)
-      return { label: "Em andamento", color: "bg-blue-500" };
-    return { label: "Próxima", color: "bg-brand-primary" };
-  };
 
   const fullName = `${user.firstName || ""} ${user.lastName || ""}`.trim();
 
@@ -103,12 +92,7 @@ export default async function ProfilePage() {
             </div>
           </div>
 
-          <Button
-            variant="outline"
-            className="rounded-full border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white transition-all"
-          >
-            Editar Perfil
-          </Button>
+          <EditProfileDialog user={user} />
         </div>
       </header>
 
