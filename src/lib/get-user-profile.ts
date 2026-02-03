@@ -26,7 +26,7 @@ export default async function getUserProfile() {
 
         places: {
           orderBy: { createdAt: "desc" },
-          take: 10,
+          take: 100,
         },
       },
     });
