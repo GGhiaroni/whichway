@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { format } from "date-fns";
+import { format, isAfter, isBefore, parseISO, subYears } from "date-fns";
 import { Loader2, Lock } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -115,11 +115,25 @@ export default function EditProfileDialog({ user }: EditProfileDialogProps) {
     }
   };
 
+  const MIN_AGE = 18;
+
+  const maxDateAllowed = subYears(new Date(), MIN_AGE);
+
+  const maxDateString = format(maxDateAllowed, "yyyy-MM-dd");
+
+  const minDateString = "1900-01-01";
+
   const handleSave = async () => {
     if (formData.dateOfBirth) {
-      const selectedDate = new Date(formData.dateOfBirth);
-      if (selectedDate > new Date()) {
-        toast.error("A data de nascimento não pode ser no futuro.");
+      const selectedDate = parseISO(formData.dateOfBirth);
+
+      if (isAfter(selectedDate, maxDateAllowed)) {
+        toast.error(`Você precisa ter pelo menos ${MIN_AGE} anos.`);
+        return;
+      }
+
+      if (isBefore(selectedDate, parseISO(minDateString))) {
+        toast.error("Data de nascimento inválida.");
         return;
       }
     }
@@ -147,8 +161,6 @@ export default function EditProfileDialog({ user }: EditProfileDialogProps) {
       setIsSaving(false);
     }
   };
-
-  const maxDate = new Date().toISOString().split("T")[0];
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -199,7 +211,8 @@ export default function EditProfileDialog({ user }: EditProfileDialogProps) {
                 id="dateOfBirth"
                 name="dateOfBirth"
                 type="date"
-                max={maxDate}
+                max={maxDateString}
+                min={minDateString}
                 value={formData.dateOfBirth}
                 onChange={handleChange}
                 className="bg-white border-brand-primary/20 focus:border-brand-primary"
