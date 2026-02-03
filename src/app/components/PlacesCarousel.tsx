@@ -35,9 +35,9 @@ export default function PlacesCarousel({ places, type }: PlacesCarouselProps) {
   const viewAllLink =
     type === PlaceStatus.VISITED
       ? "/meu-perfil/lugares/visitados"
-      : "/meu-perfil/lugares/desejos";
+      : "/meu-perfil/lugares/wishlist";
 
-  const typeLabel = type === PlaceStatus.VISITED ? "visitados" : "desejos";
+  const typeLabel = type === PlaceStatus.VISITED ? "visitados" : "wishlist";
 
   return (
     <div className="w-full relative px-4 md:px-12">
