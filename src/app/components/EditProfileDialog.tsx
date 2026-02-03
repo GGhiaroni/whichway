@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { format } from "date-fns";
-import { Loader2 } from "lucide-react";
+import { Loader2, Lock } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -34,6 +34,22 @@ interface EditProfileDialogProps {
   user: UserData;
 }
 
+const maskCPF = (value: string) => {
+  return value
+    .replace(/\D/g, "")
+    .replace(/(\d{3})(\d)/, "$1.$2")
+    .replace(/(\d{3})(\d)/, "$1.$2")
+    .replace(/(\d{3})(\d{1,2})/, "$1-$2")
+    .replace(/(-\d{2})\d+?$/, "$1");
+};
+
+const maskCEP = (value: string) => {
+  return value
+    .replace(/\D/g, "")
+    .replace(/(\d{5})(\d)/, "$1-$2")
+    .replace(/(-\d{3})\d+?$/, "$1");
+};
+
 export default function EditProfileDialog({ user }: EditProfileDialogProps) {
   const [open, setOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -41,7 +57,6 @@ export default function EditProfileDialog({ user }: EditProfileDialogProps) {
 
   const [formData, setFormData] = useState({
     cpf: user.cpf || "",
-
     dateOfBirth: user.dateOfBirth
       ? format(new Date(user.dateOfBirth), "yyyy-MM-dd")
       : "",
@@ -55,7 +70,16 @@ export default function EditProfileDialog({ user }: EditProfileDialogProps) {
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const name = e.target.name;
+    let value = e.target.value;
+
+    if (name === "cpf") {
+      value = maskCPF(value);
+    }
+    if (name === "cep") {
+      value = maskCEP(value);
+    }
+
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -83,7 +107,7 @@ export default function EditProfileDialog({ user }: EditProfileDialogProps) {
         city: data.localidade,
         state: data.uf,
       }));
-      toast.success("Endereço encontrado!");
+      toast.success("Endereço preenchido automaticamente!");
     } catch (error) {
       toast.error("Erro ao buscar CEP.");
     } finally {
@@ -92,6 +116,14 @@ export default function EditProfileDialog({ user }: EditProfileDialogProps) {
   };
 
   const handleSave = async () => {
+    if (formData.dateOfBirth) {
+      const selectedDate = new Date(formData.dateOfBirth);
+      if (selectedDate > new Date()) {
+        toast.error("A data de nascimento não pode ser no futuro.");
+        return;
+      }
+    }
+
     setIsSaving(true);
     try {
       const dateObj = formData.dateOfBirth
@@ -116,57 +148,72 @@ export default function EditProfileDialog({ user }: EditProfileDialogProps) {
     }
   };
 
+  const maxDate = new Date().toISOString().split("T")[0];
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white"
+          className="border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white transition-all"
         >
           Editar Perfil
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="bg-brand-cream sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="bg-brand-cream sm:max-w-[600px] max-h-[90vh] overflow-y-auto border-stone-200">
         <DialogHeader>
-          <DialogTitle className="text-brand-dark text-xl">
+          <DialogTitle className="text-brand-dark text-xl font-serif">
             Editar Informações
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-gray-600">
             Mantenha seus dados atualizados para facilitar suas próximas
             viagens.
           </DialogDescription>
         </DialogHeader>
 
-        <div className="grid gap-4 py-4">
+        <div className="grid gap-5 py-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="cpf">CPF</Label>
+              <Label htmlFor="cpf" className="text-brand-dark font-medium">
+                CPF
+              </Label>
               <Input
                 id="cpf"
                 name="cpf"
                 placeholder="000.000.000-00"
                 value={formData.cpf}
                 onChange={handleChange}
+                maxLength={14}
+                className="bg-white border-brand-primary/20 focus:border-brand-primary"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="dateOfBirth">Data de Nascimento</Label>
+              <Label
+                htmlFor="dateOfBirth"
+                className="text-brand-dark font-medium"
+              >
+                Data de Nascimento
+              </Label>
               <Input
                 id="dateOfBirth"
                 name="dateOfBirth"
                 type="date"
+                max={maxDate}
                 value={formData.dateOfBirth}
                 onChange={handleChange}
+                className="bg-white border-brand-primary/20 focus:border-brand-primary"
               />
             </div>
           </div>
 
-          <div className="h-[1px] bg-stone-200 my-2" />
+          <div className="h-[1px] bg-brand-primary/10 my-1" />
 
           <div className="grid grid-cols-4 gap-4 items-end">
             <div className="col-span-2 space-y-2 relative">
-              <Label htmlFor="cep">CEP</Label>
+              <Label htmlFor="cep" className="text-brand-dark font-medium">
+                CEP
+              </Label>
               <div className="relative">
                 <Input
                   id="cep"
@@ -175,100 +222,127 @@ export default function EditProfileDialog({ user }: EditProfileDialogProps) {
                   value={formData.cep}
                   onChange={handleChange}
                   onBlur={handleBlurCep}
-                  className={isLoadingCep ? "pr-8 opacity-70" : ""}
+                  maxLength={9}
+                  className={`bg-white border-brand-primary/20 focus:border-brand-primary ${isLoadingCep ? "opacity-50" : ""}`}
                 />
                 {isLoadingCep && (
-                  <div className="absolute right-2 top-2.5">
+                  <div className="absolute right-3 top-2.5">
                     <Loader2 className="h-4 w-4 animate-spin text-brand-primary" />
                   </div>
                 )}
               </div>
             </div>
-            <div className="col-span-2 flex items-center pb-2 text-xs text-gray-500">
+            <div className="col-span-2 pb-3 text-xs text-gray-500 italic">
               {isLoadingCep
-                ? "Buscando endereço..."
-                : "Digite o CEP para buscar"}
+                ? "Buscando..."
+                : "Digite o CEP para buscar endereço"}
             </div>
           </div>
 
           <div className="grid grid-cols-4 gap-4">
             <div className="col-span-3 space-y-2">
-              <Label htmlFor="street">Rua / Logradouro</Label>
+              <Label className="flex items-center gap-2 text-gray-500">
+                Rua <Lock className="w-3 h-3" />
+              </Label>
               <Input
                 id="street"
                 name="street"
                 value={formData.street}
-                className="bg-gray-100 cursor-not-allowed"
+                className="bg-stone-200/50 border-transparent text-gray-600 cursor-not-allowed font-medium"
                 readOnly
+                tabIndex={-1}
               />
             </div>
             <div className="col-span-1 space-y-2">
-              <Label htmlFor="number">Número</Label>
+              <Label htmlFor="number" className="text-brand-dark font-medium">
+                Número
+              </Label>
               <Input
                 id="number"
                 name="number"
                 placeholder="123"
                 value={formData.number}
                 onChange={handleChange}
+                className="bg-white border-brand-primary/20 focus:border-brand-primary"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="neighborhood">Bairro</Label>
+              <Label className="flex items-center gap-2 text-gray-500">
+                Bairro <Lock className="w-3 h-3" />
+              </Label>
               <Input
                 id="neighborhood"
                 name="neighborhood"
                 value={formData.neighborhood}
-                className="bg-gray-100 cursor-not-allowed"
+                className="bg-stone-200/50 border-transparent text-gray-600 cursor-not-allowed font-medium"
                 readOnly
+                tabIndex={-1}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="complement">Complemento</Label>
+              <Label
+                htmlFor="complement"
+                className="text-brand-dark font-medium"
+              >
+                Complemento
+              </Label>
               <Input
                 id="complement"
                 name="complement"
                 placeholder="Apto 101"
                 value={formData.complement}
                 onChange={handleChange}
+                className="bg-white border-brand-primary/20 focus:border-brand-primary"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-4 gap-4">
             <div className="col-span-3 space-y-2">
-              <Label htmlFor="city">Cidade</Label>
+              <Label className="flex items-center gap-2 text-gray-500">
+                Cidade <Lock className="w-3 h-3" />
+              </Label>
               <Input
                 id="city"
                 name="city"
                 value={formData.city}
-                className="bg-gray-100 cursor-not-allowed"
+                className="bg-stone-200/50 border-transparent text-gray-600 cursor-not-allowed font-medium"
                 readOnly
+                tabIndex={-1}
               />
             </div>
             <div className="col-span-1 space-y-2">
-              <Label htmlFor="state">UF</Label>
+              <Label className="flex items-center gap-2 text-gray-500">
+                UF <Lock className="w-3 h-3" />
+              </Label>
               <Input
                 id="state"
                 name="state"
                 value={formData.state}
-                className="bg-gray-100 cursor-not-allowed"
+                className="bg-stone-200/50 border-transparent text-gray-600 cursor-not-allowed font-medium text-center"
                 readOnly
+                tabIndex={-1}
               />
             </div>
           </div>
         </div>
 
-        <DialogFooter>
-          <Button variant="ghost" onClick={() => setOpen(false)}>
+        <DialogFooter className="gap-2 sm:gap-0">
+          <Button
+            variant="ghost"
+            onClick={() => setOpen(false)}
+            disabled={isSaving}
+            className="hover:bg-stone-100 text-stone-600"
+          >
             Cancelar
           </Button>
           <Button
             onClick={handleSave}
             disabled={isSaving || isLoadingCep}
-            className="bg-brand-primary text-white"
+            className="bg-brand-primary hover:bg-brand-dark text-white font-semibold transition-all shadow-md"
           >
             {isSaving ? (
               <>
