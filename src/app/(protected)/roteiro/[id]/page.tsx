@@ -90,7 +90,7 @@ export default async function RoteiroPage({ params }: PageProps) {
 
         <div className="absolute top-6 left-6 z-20">
           <Link
-            href="/criar-roteiro"
+            href="/meu-perfil"
             className="group flex items-center gap-2 text-white/90 hover:text-white transition-all bg-black/20 hover:bg-black/40 backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium border border-white/10"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
