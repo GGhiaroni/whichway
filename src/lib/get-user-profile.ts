@@ -21,10 +21,12 @@ export default async function getUserProfile() {
       include: {
         trips: {
           orderBy: { createdAt: "desc" },
+          take: 6,
         },
 
         places: {
           orderBy: { createdAt: "desc" },
+          take: 10,
         },
       },
     });
