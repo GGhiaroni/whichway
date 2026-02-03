@@ -8,7 +8,7 @@ import {
 import { PLACEHOLDER_IMAGES } from "@/lib/placeholders";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { MapPin, Plus } from "lucide-react";
+import { ArrowRight, MapPin, Plus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import DeleteTripDialog from "./DeleteTripDialog";
@@ -37,16 +37,9 @@ export default function TripsCarousel({ trips }: TripsCarouselProps) {
     return PLACEHOLDER_IMAGES[index];
   };
 
-  const getTripStatus = (startDate: Date, endDate: Date) => {
-    const now = new Date();
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-
-    if (now > end) return { label: "Concluída", color: "bg-green-500" };
-    if (now >= start && now <= end)
-      return { label: "Em andamento", color: "bg-blue-500" };
-    return { label: "Próxima", color: "bg-brand-primary" };
-  };
+  const VISIBLE_LIMIT = 5;
+  const hasMoreTrips = trips.length > VISIBLE_LIMIT;
+  const visibleTrips = trips.slice(0, VISIBLE_LIMIT);
 
   return (
     <div className="w-full relative px-4 md:px-12">
@@ -58,9 +51,7 @@ export default function TripsCarousel({ trips }: TripsCarouselProps) {
         className="w-full"
       >
         <CarouselContent className="-ml-4">
-          {trips.map((trip) => {
-            const status = getTripStatus(trip.startDate, trip.endDate);
-
+          {visibleTrips.map((trip) => {
             const tripTitle =
               (trip.itinerary as ItineraryJSON)?.titulo ||
               `Viagem para ${trip.destination}`;
@@ -113,14 +104,34 @@ export default function TripsCarousel({ trips }: TripsCarouselProps) {
             );
           })}
 
-          <CarouselItem className="pl-4 basis-[85%] md:basis-[45%] lg:basis-[30%]">
-            <Link href="/criar-roteiro" className="h-full block">
-              <div className="h-full min-h-[280px] rounded-2xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 hover:border-brand-primary hover:text-brand-primary hover:bg-brand-primary/5 transition-all cursor-pointer">
-                <Plus className="w-8 h-8 mb-2" />
-                <span className="text-sm font-bold">Planejar Nova Viagem</span>
-              </div>
-            </Link>
-          </CarouselItem>
+          {hasMoreTrips ? (
+            <CarouselItem className="pl-4 basis-[85%] md:basis-[45%] lg:basis-[30%]">
+              <Link href="/meu-perfil/roteiros" className="h-full block">
+                <div className="h-full min-h-[280px] rounded-2xl bg-brand-primary/5 border-2 border-brand-primary/20 flex flex-col items-center justify-center text-brand-primary hover:bg-brand-primary hover:text-white transition-all cursor-pointer group gap-4">
+                  <div className="p-4 bg-white rounded-full group-hover:bg-white/20 transition-colors shadow-sm">
+                    <ArrowRight className="w-6 h-6" />
+                  </div>
+                  <div className="text-center">
+                    <span className="text-lg font-bold block">Ver todos</span>
+                    <span className="text-sm opacity-80 font-medium">
+                      +{trips.length - VISIBLE_LIMIT} roteiros
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            </CarouselItem>
+          ) : (
+            <CarouselItem className="pl-4 basis-[85%] md:basis-[45%] lg:basis-[30%]">
+              <Link href="/criar-roteiro" className="h-full block">
+                <div className="h-full min-h-[280px] rounded-2xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 hover:border-brand-primary hover:text-brand-primary hover:bg-brand-primary/5 transition-all cursor-pointer">
+                  <Plus className="w-8 h-8 mb-2" />
+                  <span className="text-sm font-bold">
+                    Planejar Nova Viagem
+                  </span>
+                </div>
+              </Link>
+            </CarouselItem>
+          )}
         </CarouselContent>
 
         <CarouselPrevious className="hidden md:flex -left-12 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white" />
