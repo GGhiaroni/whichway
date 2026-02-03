@@ -9,11 +9,14 @@ import { PlaceStatus } from "@prisma/client";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import {
+  Cake,
   Calendar,
   CheckCircle2,
+  Fingerprint,
   Heart,
   LucideIcon,
   Mail,
+  MapPin,
   Plane,
   Plus,
   Settings,
@@ -32,6 +35,20 @@ export default async function ProfilePage() {
   }
 
   const fullName = `${user.firstName || ""} ${user.lastName || ""}`.trim();
+
+  const birthDateFormatted = user.dateOfBirth
+    ? format(new Date(user.dateOfBirth), "dd/MM/yyyy", { locale: ptBR })
+    : "Não informado";
+
+  const addressFormatted = user.street
+    ? `${user.street}, ${user.number || "S/N"}${
+        user.complement ? ` (${user.complement})` : ""
+      } - ${user.neighborhood}, ${user.city} - ${user.state}`
+    : "Endereço não cadastrado";
+
+  const cpfFormatted = user.cpf
+    ? user.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
+    : "Não informado";
 
   return (
     <div className="min-h-screen bg-[#FDF8F3] pb-20">
@@ -108,6 +125,21 @@ export default async function ProfilePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <InfoItem icon={User} label="Nome Completo" value={fullName} />
             <InfoItem icon={Mail} label="E-mail" value={user.email} />
+
+            <InfoItem icon={Fingerprint} label="CPF" value={cpfFormatted} />
+            <InfoItem
+              icon={Cake}
+              label="Data de Nascimento"
+              value={birthDateFormatted}
+            />
+
+            <div className="md:col-span-2">
+              <InfoItem
+                icon={MapPin}
+                label="Endereço Cadastrado"
+                value={addressFormatted}
+              />
+            </div>
 
             <InfoItem
               icon={Calendar}
@@ -217,14 +249,14 @@ function InfoItem({
 }) {
   return (
     <div className="flex items-center gap-4 p-3 rounded-xl bg-stone-50 border border-stone-100/50">
-      <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-gray-400 shadow-sm">
-        <Icon className="w-5 h-5" />
+      <div className="shrink-0 mt-0.5 w-10 h-10 rounded-full bg-brand-dark flex items-center justify-center text-gray-400 shadow-sm">
+        <Icon className="w-5 h-5 text-brand-cream font-semibold" />
       </div>
-      <div>
-        <p className="text-xs text-gray-400 uppercase font-bold tracking-wider">
+      <div className="flex-1 min-w-0">
+        <p className="text-[10px] uppercase font-bold tracking-widest text-gray-400 mb-1">
           {label}
         </p>
-        <p className="text-brand-dark font-medium">
+        <p className="text-brand-dark font-medium text-base leading-relaxed break-words">
           {value || "Não informado"}
         </p>
       </div>
