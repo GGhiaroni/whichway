@@ -8,6 +8,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { prisma } from "@/lib/prisma";
+import { getPriceBadgeConfig } from "@/lib/utils";
 import { ArrowDown, TrendingUp } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -28,52 +29,23 @@ async function getFeaturedDestinations() {
 }
 
 const renderPriceBadge = (price: string) => {
-  const safePrice = price ? price.trim() : "";
+  const config = getPriceBadgeConfig(price);
 
   const baseClasses =
-    "backdrop-blur-md px-2 py-1 md:px-3 md:py-1.5 shadow-lg border text-white font-bold hover:scale-105 transition-transform cursor-default select-none";
+    "backdrop-blur-md px-2 py-1 md:px-3 md:py-1.5 shadow-lg border font-bold hover:scale-105 transition-transform cursor-default select-none";
 
-  switch (safePrice) {
-    case "Alto":
-      return (
-        <Badge className={`${baseClasses} bg-amber-100 border-amber-300`}>
-          <span className="flex items-center gap-1.5">
-            <span className="text-sm md:text-lg">💰💰💰</span>
-            <span className="uppercase tracking-wide font-bold text-[10px] md:text-xs text-amber-700">
-              Alto
-            </span>
-          </span>
-        </Badge>
-      );
-    case "Médio":
-      return (
-        <Badge className={`${baseClasses} bg-blue-100 border-blue-300`}>
-          <span className="flex items-center gap-1.5">
-            <span className="text-sm md:text-lg">💰💰</span>
-            <span className="uppercase tracking-wide font-bold text-[10px] md:text-xs text-blue-700">
-              Médio
-            </span>
-          </span>
-        </Badge>
-      );
-    case "Baixo":
-      return (
-        <Badge className={`${baseClasses} bg-green-100 border-green-300`}>
-          <span className="flex items-center gap-1.5">
-            <span className="text-sm md:text-lg">💰</span>
-            <span className="uppercase tracking-wide font-bold text-[10px] md:text-xs text-green-700">
-              Baixo
-            </span>
-          </span>
-        </Badge>
-      );
-    default:
-      return (
-        <Badge className={`${baseClasses} bg-gray-500/90 border-gray-400`}>
-          <span className="text-[10px] md:text-xs uppercase">Sob Consulta</span>
-        </Badge>
-      );
-  }
+  return (
+    <Badge className={`${baseClasses} ${config.classes}`}>
+      <span className="flex items-center gap-1.5">
+        {config.emoji && (
+          <span className="text-sm md:text-lg">{config.emoji}</span>
+        )}
+        <span className="uppercase tracking-wide font-bold text-[10px] md:text-xs">
+          {config.label}
+        </span>
+      </span>
+    </Badge>
+  );
 };
 
 export default async function EmAlta() {
