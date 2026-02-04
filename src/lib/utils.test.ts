@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   calculateTripDays,
   cleanAIJSON,
+  getPriceBadgeConfig,
   removeAccentsForUnsplashQuery,
 } from "./utils";
 
@@ -71,5 +72,35 @@ describe("Utils: cleanAIJSON", () => {
     const resultado = cleanAIJSON(entradaLimpa);
 
     expect(resultado).toBe(entradaLimpa);
+  });
+});
+
+describe("Utils: getPriceBadgeConfig", () => {
+  it("deve retornar a configuração correta para preço Alto", () => {
+    const config = getPriceBadgeConfig("Alto");
+    expect(config.label).toBe("Alto");
+    expect(config.emoji).toBe("💰💰💰");
+  });
+
+  it("deve retornar a configuração correta para preço Médio", () => {
+    const config = getPriceBadgeConfig("Médio");
+    expect(config.label).toBe("Médio");
+    expect(config.emoji).toBe("💰💰");
+  });
+
+  it("deve retornar a configuração correta para preço Baixo", () => {
+    const config = getPriceBadgeConfig("Baixo");
+    expect(config.label).toBe("Baixo");
+    expect(config.emoji).toBe("💰");
+  });
+
+  it("deve lidar com espaços em branco extras", () => {
+    const config = getPriceBadgeConfig("  Baixo  ");
+    expect(config.label).toBe("Baixo");
+  });
+
+  it("deve retornar Sob Consulta para valores desconhecidos", () => {
+    const config = getPriceBadgeConfig("Desconhecido");
+    expect(config.label).toBe("Sob Consulta");
   });
 });
