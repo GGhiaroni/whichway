@@ -1,14 +1,15 @@
 import { describe, expect, it } from "vitest";
 import { removeAccentsForUnsplashQuery } from "./utils";
 
-describe("Utils: removeAccents", () => {
-  it("deve remover acentos de palavras comuns", () => {
+describe("Utils: removeAccentsForUnsplashQuery", () => {
+  it("deve remover acentos básicos", () => {
     expect(removeAccentsForUnsplashQuery("São Paulo")).toBe("Sao Paulo");
-  });
-
-  it("deve lidar com crases, cedilha, til e acentos circunflexos", () => {
     expect(removeAccentsForUnsplashQuery("Às vezes")).toBe("As vezes");
     expect(removeAccentsForUnsplashQuery("Vovô")).toBe("Vovo");
+    expect(removeAccentsForUnsplashQuery("Tártaro")).toBe("Tartaro");
+  });
+
+  it("deve lidar com caracteres especiais", () => {
     expect(removeAccentsForUnsplashQuery("Maçã")).toBe("Maca");
   });
 
