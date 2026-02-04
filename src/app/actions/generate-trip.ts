@@ -3,6 +3,7 @@
 import { GEMINI_MODEL_FLASH, genAI } from "@/lib/gemini";
 import { prisma } from "@/lib/prisma";
 import { getUnsplashPhoto } from "@/lib/unsplash";
+import { removeAccentsForUnsplashQuery } from "@/lib/utils";
 import { currentUser } from "@clerk/nextjs/server";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -14,10 +15,6 @@ interface GenerateTripsParams {
   pace: string;
   travelers: { adults: number; children: number };
   interests: string[];
-}
-
-function removeAccentsForUnsplashQuery(str: string) {
-  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
 export default async function generateTrip(data: GenerateTripsParams) {
