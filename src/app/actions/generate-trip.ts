@@ -3,7 +3,7 @@
 import { GEMINI_MODEL_FLASH, genAI } from "@/lib/gemini";
 import { prisma } from "@/lib/prisma";
 import { getUnsplashPhoto } from "@/lib/unsplash";
-import { removeAccentsForUnsplashQuery } from "@/lib/utils";
+import { calculateTripDays, removeAccentsForUnsplashQuery } from "@/lib/utils";
 import { currentUser } from "@clerk/nextjs/server";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -48,12 +48,14 @@ export default async function generateTrip(data: GenerateTripsParams) {
     });
     const formattedTo = format(data.dates.to, "dd/MM/yyyy", { locale: ptBR });
 
+    const tripDuration = calculateTripDays(data.dates.from, data.dates.to);
+
     const prompt = `
             Atue como um especialista em viagens de luxo e aventura.
             Crie um roteiro turístico detalhado para: ${data.destination}.
             
             Detalhes da viagem:
-            - Período: ${formattedFrom} até ${formattedTo}
+            - Período: ${formattedFrom} até ${formattedTo} - duração de ${tripDuration} dias
             - Orçamento: ${data.budget}
             - Ritmo: ${data.pace}
             - Grupo: ${data.travelers.adults} adultos, ${data.travelers.children} crianças
