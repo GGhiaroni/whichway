@@ -22,3 +22,7 @@ export function calculateTripDays(startDate: Date, endDate: Date): number {
 
   return diffDays + 1;
 }
+
+export function cleanAIJSON(text: string): string {
+  return text.replace(/```json|```/g, "").trim();
+}

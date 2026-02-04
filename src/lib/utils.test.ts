@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { calculateTripDays, removeAccentsForUnsplashQuery } from "./utils";
+import {
+  calculateTripDays,
+  cleanAIJSON,
+  removeAccentsForUnsplashQuery,
+} from "./utils";
 
 describe("Utils: removeAccentsForUnsplashQuery'", () => {
   it("deve remover acentos básicos", () => {
@@ -41,5 +45,31 @@ describe("Utils: calculateTripDays", () => {
     const fim = new Date("2024-03-01");
 
     expect(calculateTripDays(inicio, fim)).toBe(3);
+  });
+});
+
+describe("Utils: cleanAIJSON", () => {
+  it("deve remover blocos de código markdown (```json)", () => {
+    const entradaSuja = '```json\n[{"cidade": "Paris"}]\n```';
+
+    const resultado = cleanAIJSON(entradaSuja);
+
+    expect(resultado).toBe('[{"cidade": "Paris"}]');
+  });
+
+  it("deve remover apenas os crases (```) sem o json escrito", () => {
+    const entradaSuja = '```\n[{"cidade": "Tokyo"}]\n```';
+
+    const resultado = cleanAIJSON(entradaSuja);
+
+    expect(resultado).toBe('[{"cidade": "Tokyo"}]');
+  });
+
+  it("não deve estragar um JSON que já venha limpo", () => {
+    const entradaLimpa = '[{"cidade": "London"}]';
+
+    const resultado = cleanAIJSON(entradaLimpa);
+
+    expect(resultado).toBe(entradaLimpa);
   });
 });

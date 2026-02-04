@@ -2,6 +2,7 @@
 
 import { GEMINI_MODEL_FLASH, genAI } from "@/lib/gemini";
 import { getUnsplashPhoto } from "@/lib/unsplash";
+import { cleanAIJSON } from "@/lib/utils";
 
 interface SuggestionParams {
   budget: string;
@@ -42,7 +43,7 @@ export async function suggestDestinations(data: SuggestionParams) {
     const responseText = result.response.text();
     if (!responseText) throw new Error("IA retornou resposta vazia");
 
-    const text = responseText.replace(/```json|```/g, "").trim();
+    const text = cleanAIJSON(responseText);
 
     const suggestions = JSON.parse(text) as RawSuggestion[];
 

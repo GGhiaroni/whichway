@@ -3,7 +3,11 @@
 import { GEMINI_MODEL_FLASH, genAI } from "@/lib/gemini";
 import { prisma } from "@/lib/prisma";
 import { getUnsplashPhoto } from "@/lib/unsplash";
-import { calculateTripDays, removeAccentsForUnsplashQuery } from "@/lib/utils";
+import {
+  calculateTripDays,
+  cleanAIJSON,
+  removeAccentsForUnsplashQuery,
+} from "@/lib/utils";
 import { currentUser } from "@clerk/nextjs/server";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -89,14 +93,7 @@ export default async function generateTrip(data: GenerateTripsParams) {
 
     if (!responseText) throw new Error("IA não retornou resposta");
 
-    const cleanText = responseText.replace(/```json|```/g, "").trim();
-    const jsonStartIndex = cleanText.indexOf("{");
-    const jsonEndIndex = cleanText.lastIndexOf("}");
-    const finalJsonString = cleanText.substring(
-      jsonStartIndex,
-      jsonEndIndex + 1,
-    );
-
+    const finalJsonString = cleanAIJSON(responseText);
     const itineraryJson = JSON.parse(finalJsonString);
 
     let tripImageUrl = null;
