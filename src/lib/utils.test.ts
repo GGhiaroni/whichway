@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  BUDGET_OPTIONS,
   calculateTripDays,
   cleanAIJSON,
   getPriceBadgeConfig,
@@ -102,5 +103,26 @@ describe("Utils: getPriceBadgeConfig", () => {
   it("deve retornar Sob Consulta para valores desconhecidos", () => {
     const config = getPriceBadgeConfig("Desconhecido");
     expect(config.label).toBe("Sob Consulta");
+  });
+});
+
+describe("Configurações de orçamento no StepBudget", () => {
+  it("deve conter exatamente as 4 opções padrão", () => {
+    expect(BUDGET_OPTIONS).toHaveLength(4);
+  });
+
+  it("deve possuir IDs válidos para procesar", () => {
+    const ids = BUDGET_OPTIONS.map((opt) => opt.id);
+    expect(ids).toContain("econômico");
+    expect(ids).toContain("moderado");
+    expect(ids).toContain("confortável");
+    expect(ids).toContain("luxo");
+  });
+
+  it("todas as opções devem ter ícones e descrições preenchidas", () => {
+    BUDGET_OPTIONS.forEach((option) => {
+      expect(option.icon).not.toBe("");
+      expect(option.desc.length).toBeGreaterThan(10);
+    });
   });
 });

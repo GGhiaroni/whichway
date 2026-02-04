@@ -59,3 +59,34 @@ export function getPriceBadgeConfig(price: PriceLevel) {
       };
   }
 }
+
+export const BUDGET_OPTIONS = [
+  {
+    id: "econômico",
+    label: "Econômico",
+    desc: "Hostels, transporte público, refeições locais",
+    value: "Até R$ 5.000",
+    icon: "🎒",
+  },
+  {
+    id: "moderado",
+    label: "Moderado",
+    desc: "Hotéis 3 estrelas, algumas experiências",
+    value: "R$ 5.000 - R$ 10.000",
+    icon: "💰",
+  },
+  {
+    id: "confortável",
+    label: "Confortável",
+    desc: "Hotéis 4 estrelas, tours guiados",
+    value: "R$ 10.000 - R$ 20.000",
+    icon: "🥂",
+  },
+  {
+    id: "luxo",
+    label: "Luxo",
+    desc: "Hotéis 5 estrelas, experiências exclusivas",
+    value: "Acima de R$ 20.000",
+    icon: "💎",
+  },
+] as const;

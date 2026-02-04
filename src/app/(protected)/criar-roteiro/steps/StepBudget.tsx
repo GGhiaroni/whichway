@@ -1,44 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { TripBudget, useTripStore } from "@/store/trip-store";
-
-const budgetOptions: {
-  id: TripBudget;
-  label: string;
-  desc: string;
-  value: string;
-  icon: string;
-}[] = [
-  {
-    id: "econômico",
-    label: "Econômico",
-    desc: "Hostels, transporte público, refeições locais",
-    value: "Até R$ 5.000",
-    icon: "🎒",
-  },
-  {
-    id: "moderado",
-    label: "Moderado",
-    desc: "Hotéis 3 estrelas, algumas experiências",
-    value: "R$ 5.000 - R$ 10.000",
-    icon: "💰",
-  },
-  {
-    id: "confortável",
-    label: "Confortável",
-    desc: "Hotéis 4 estrelas, tours guiados",
-    value: "R$ 10.000 - R$ 20.000",
-    icon: "🥂",
-  },
-  {
-    id: "luxo",
-    label: "Luxo",
-    desc: "Hotéis 5 estrelas, experiências exclusivas",
-    value: "Acima de R$ 20.000",
-    icon: "💎",
-  },
-];
+import { BUDGET_OPTIONS } from "@/lib/utils";
+import { useTripStore } from "@/store/trip-store";
 
 export default function StepBudget() {
   const { budget, setBudget, setStep } = useTripStore();
@@ -55,7 +19,7 @@ export default function StepBudget() {
       </div>
 
       <div className="flex flex-col gap-4 mb-10">
-        {budgetOptions.map((item) => {
+        {BUDGET_OPTIONS.map((item) => {
           const isSelected = budget === item.id;
 
           return (
