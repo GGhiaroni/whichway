@@ -1,33 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { TripPace, useTripStore } from "@/store/trip-store";
-
-const paceOptions: {
-  id: TripPace;
-  label: string;
-  desc: string;
-  icon: string;
-}[] = [
-  {
-    id: "relaxado",
-    label: "Relaxado",
-    desc: "Você não abre mão de uma viagem para descansar e revigorar as energias.",
-    icon: "🧘‍♂️",
-  },
-  {
-    id: "equilibrado",
-    label: "Equilibrado",
-    desc: "Descansar é importante, mas você não quer abrir mão de conhecer os principais atrativos dos seus destinos.",
-    icon: "😎",
-  },
-  {
-    id: "intenso",
-    label: "Intenso",
-    desc: "Descanso? Que nada! Você quer aproveitar cada atração o máximo que puder e voltar com a mala cheia de histórias e recordações!",
-    icon: "🏃",
-  },
-];
+import { PACE_OPTIONS } from "@/lib/utils";
+import { useTripStore } from "@/store/trip-store";
 
 export default function StepPace() {
   const { pace, setPace, setStep } = useTripStore();
@@ -44,7 +19,7 @@ export default function StepPace() {
       </div>
 
       <div className="flex flex-col gap-4 mb-10">
-        {paceOptions.map((item) => {
+        {PACE_OPTIONS.map((item) => {
           const isSelected = pace === item.id;
 
           return (

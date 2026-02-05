@@ -1,22 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { TripInterest, useTripStore } from "@/store/trip-store";
-
-const interestsOptions: { id: TripInterest; label: string; icon: string }[] = [
-  { id: "natureza", label: "Natureza", icon: "⛰️" },
-  { id: "história", label: "História", icon: "🏛️" },
-  { id: "compras", label: "Compras", icon: "🛍️" },
-  { id: "praias", label: "Praias", icon: "🏖️" },
-  { id: "gastronomia", label: "Gastronomia", icon: "🍽️" },
-  { id: "fotografia", label: "Fotografia", icon: "📸" },
-  { id: "espiritualidade", label: "Espiritualidade", icon: "🧎‍♂️" },
-  { id: "aventura", label: "Aventura", icon: "🧗‍♂️" },
-  { id: "vida-noturna", label: "Vida noturna", icon: "🪩" },
-  { id: "cultura-local", label: "Cultura local", icon: "🎭" },
-  { id: "esportes", label: "Esportes", icon: "⚽️" },
-  { id: "arquitetura", label: "Arquitetura", icon: "🏰" },
-];
+import { INTERESTS_OPTIONS } from "@/lib/utils";
+import { useTripStore } from "@/store/trip-store";
 
 export default function StepInterests() {
   const { interests, toggleInterest, setStep } = useTripStore();
@@ -33,7 +19,7 @@ export default function StepInterests() {
         </p>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-10">
-        {interestsOptions.map((item) => {
+        {INTERESTS_OPTIONS.map((item) => {
           const isSelected = interests.includes(item.id);
 
           return (

@@ -3,8 +3,12 @@ import {
   BUDGET_OPTIONS,
   calculateTripDays,
   cleanAIJSON,
+  formatCPF,
+  formatFullAddress,
   getPriceBadgeConfig,
+  isAdult,
   removeAccentsForUnsplashQuery,
+  validateTravelers,
 } from "./utils";
 
 describe("Utils: removeAccentsForUnsplashQuery'", () => {
@@ -123,6 +127,49 @@ describe("Configurações de orçamento no StepBudget", () => {
     BUDGET_OPTIONS.forEach((option) => {
       expect(option.icon).not.toBe("");
       expect(option.desc.length).toBeGreaterThan(10);
+    });
+  });
+});
+
+describe("Lógica de Datas e Idade", () => {
+  it("deve calcular duração da viagem incluindo o dia inicial", () => {
+    const d1 = new Date("2026-01-01");
+    const d2 = new Date("2026-01-05");
+    expect(calculateTripDays(d1, d2)).toBe(5);
+  });
+
+  it("deve validar se é maior de idade (18 anos)", () => {
+    const dezoitoAnosAtras = new Date();
+    dezoitoAnosAtras.setFullYear(dezoitoAnosAtras.getFullYear() - 18);
+    expect(isAdult(dezoitoAnosAtras)).toBe(true);
+
+    const crianca = new Date();
+    crianca.setFullYear(crianca.getFullYear() - 10);
+    expect(isAdult(crianca)).toBe(false);
+  });
+});
+
+describe("Formatadores de Perfil", () => {
+  it("deve formatar CPF com pontos e traço", () => {
+    expect(formatCPF("12345678901")).toBe("123.456.789-01");
+  });
+
+  it("deve retornar endereço formatado ou fallback", () => {
+    const user = {
+      street: "Av Paulista",
+      number: "1000",
+      neighborhood: "Bela Vista",
+      city: "SP",
+      state: "SP",
+    };
+    expect(formatFullAddress(user)).toContain("Av Paulista, 1000");
+    expect(formatFullAddress({})).toBe("Endereço não cadastrado");
+  });
+
+  describe("Regras de Viajantes", () => {
+    it("não deve permitir viagem sem adultos", () => {
+      expect(validateTravelers(0, 2)).toBe(false);
+      expect(validateTravelers(1, 1)).toBe(true);
     });
   });
 });
