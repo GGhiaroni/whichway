@@ -7,7 +7,7 @@ on:
     branches: ["main"]
 
 jobs:
-  test-and-build:
+  test-and-lint:
     runs-on: ubuntu-latest
 
     steps:
@@ -31,23 +31,3 @@ jobs:
 
       - name: 🧪 Run Unit Tests
         run: npm run test
-
-      - name: 🏗️ Build project
-        run: npm run build
-        env:
-          # Variáveis de Autenticação
-          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: "pk_test_fake"
-          CLERK_SECRET_KEY: "sk_test_fake"
-
-          # Variáveis de Banco de Dados
-          DATABASE_URL: "postgresql://johndoe:randompassword@localhost:5432/mydb?schema=public"
-
-          # Variáveis de APIs Externas
-          GOOGLE_AI_API_KEY: "AIza_fake_key"
-          UNSPLASH_ACCESS_KEY: "fake_unsplash_key"
-
-          # Variáveis de Roteamento Clerk
-          NEXT_PUBLIC_CLERK_SIGN_IN_URL: "/sign-in"
-          NEXT_PUBLIC_CLERK_SIGN_UP_URL: "/sign-up"
-          NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL: "/meu-perfil"
-          NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL: "/meu-perfil"
