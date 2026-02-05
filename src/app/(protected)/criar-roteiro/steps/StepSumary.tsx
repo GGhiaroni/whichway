@@ -22,6 +22,8 @@ import { toast } from "sonner";
 import SuggestionSkeleton from "./SuggestionSkeleton";
 import TransitionSkeleton from "./TransitionSkeleton";
 
+export const dynamic = "force-dynamic";
+
 interface Suggestion {
   cidade: string;
   pais: string;

@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { INTERESTS_OPTIONS } from "@/lib/utils";
 import { useTripStore } from "@/store/trip-store";
 
+export const dynamic = "force-dynamic";
+
 export default function StepInterests() {
   const { interests, toggleInterest, setStep } = useTripStore();
 

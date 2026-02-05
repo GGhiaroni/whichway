@@ -8,6 +8,8 @@ import { ptBR } from "date-fns/locale";
 import { CalendarDays } from "lucide-react";
 import { DateRange } from "react-day-picker";
 
+export const dynamic = "force-dynamic";
+
 export default function StepDates() {
   const { dates, setDates, setStep } = useTripStore();
 

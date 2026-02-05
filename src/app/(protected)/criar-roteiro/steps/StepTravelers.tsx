@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { useTripStore } from "@/store/trip-store";
 import { Minus, Plus } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 interface CounterRowProps {
   label: string;
   desc: string;

@@ -11,6 +11,8 @@ import StepPace from "./steps/StepPace";
 import StepSummary from "./steps/StepSumary";
 import StepTravelers from "./steps/StepTravelers";
 
+export const dynamic = "force-dynamic";
+
 function WizardContent() {
   const searchParams = useSearchParams();
   const router = useRouter();

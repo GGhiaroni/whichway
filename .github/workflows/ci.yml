@@ -1,4 +1,4 @@
-name: CI Quality Check 🛡️
+name: CI Quality Check
 
 on:
   push:

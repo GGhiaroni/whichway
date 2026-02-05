@@ -17,6 +17,8 @@ import {
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 interface ItineraryActivity {
   atividade: string;
   descricao: string;
