@@ -47,7 +47,6 @@ interface PageProps {
 
 export default async function RoteiroPage({ params }: PageProps) {
   const { userId: clerkId } = await auth();
-
   const { id } = await params;
 
   if (!clerkId) {
@@ -82,11 +81,31 @@ export default async function RoteiroPage({ params }: PageProps) {
   const itinerary = trip.itinerary as unknown as ItineraryContent;
 
   const formattedItineraryForPDF = itinerary.dias.map((dia) => {
-    const activities = [
-      dia.manha?.atividade ? `Manhã: ${dia.manha.atividade}` : null,
-      dia.tarde?.atividade ? `Tarde: ${dia.tarde.atividade}` : null,
-      dia.noite?.atividade ? `Noite: ${dia.noite.atividade}` : null,
-    ].filter((item): item is string => Boolean(item));
+    const activities = [];
+
+    if (dia.manha?.atividade) {
+      activities.push({
+        time: "Manhã",
+        title: dia.manha.atividade,
+        description: dia.manha.descricao || "",
+      });
+    }
+
+    if (dia.tarde?.atividade) {
+      activities.push({
+        time: "Tarde",
+        title: dia.tarde.atividade,
+        description: dia.tarde.descricao || "",
+      });
+    }
+
+    if (dia.noite?.atividade) {
+      activities.push({
+        time: "Noite",
+        title: dia.noite.atividade,
+        description: dia.noite.descricao || "",
+      });
+    }
 
     return {
       theme: dia.titulo,

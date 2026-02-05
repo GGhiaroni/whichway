@@ -1,8 +1,14 @@
 import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
 
+export interface PdfActivity {
+  time: string;
+  title: string;
+  description: string;
+}
+
 interface ItineraryDay {
   theme: string;
-  activities: string[];
+  activities: PdfActivity[];
 }
 
 interface TripPDFProps {
@@ -24,16 +30,44 @@ const styles = StyleSheet.create({
   },
   title: { fontSize: 24, marginBottom: 5, color: "#e3592c" },
   subtitle: { fontSize: 12, color: "#666" },
-  section: { margin: 10, padding: 10 },
   dayContainer: { marginBottom: 15 },
   dayTitle: {
     fontSize: 14,
     fontWeight: "bold",
-    marginBottom: 5,
+    marginBottom: 8,
     backgroundColor: "#fdf8f3",
     padding: 5,
   },
-  activity: { fontSize: 10, marginBottom: 3, marginLeft: 10 },
+
+  activityContainer: {
+    marginBottom: 8,
+    marginLeft: 10,
+    paddingLeft: 10,
+    borderLeft: 1,
+    borderLeftColor: "#ddd",
+  },
+  activityHeader: {
+    flexDirection: "row",
+    marginBottom: 2,
+  },
+  activityTime: {
+    fontSize: 10,
+    fontWeight: "bold",
+    color: "#e3592c",
+    marginRight: 5,
+    textTransform: "uppercase",
+  },
+  activityTitle: {
+    fontSize: 10,
+    fontWeight: "bold",
+    color: "#333",
+  },
+  activityDesc: {
+    fontSize: 9,
+    color: "#555",
+    marginTop: 2,
+    lineHeight: 1.4,
+  },
   footer: {
     position: "absolute",
     bottom: 30,
@@ -65,10 +99,18 @@ export const TripPDF = ({ trip }: TripPDFProps) => {
                 <Text style={styles.dayTitle}>
                   Dia {index + 1}: {day.theme || "Exploração"}
                 </Text>
+
                 {day.activities?.map((activity, i) => (
-                  <Text key={i} style={styles.activity}>
-                    • {activity}
-                  </Text>
+                  <View key={i} style={styles.activityContainer}>
+                    <View style={styles.activityHeader}>
+                      <Text style={styles.activityTime}>{activity.time}</Text>
+                      <Text style={styles.activityTitle}>{activity.title}</Text>
+                    </View>
+
+                    <Text style={styles.activityDesc}>
+                      {activity.description}
+                    </Text>
+                  </View>
                 ))}
               </View>
             ))

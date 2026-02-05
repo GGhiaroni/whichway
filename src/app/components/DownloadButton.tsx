@@ -3,18 +3,16 @@
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 import dynamic from "next/dynamic";
-import { TripPDF } from "./pdf/trip-pdf";
-
-interface ItineraryDay {
-  theme: string;
-  activities: string[];
-}
+import { PdfActivity, TripPDF } from "./pdf/trip-pdf";
 
 export interface TripData {
   destination: string;
   days: number;
   pace: string;
-  itinerary: ItineraryDay[];
+  itinerary: {
+    theme: string;
+    activities: PdfActivity[];
+  }[];
 }
 
 const PDFDownloadLink = dynamic(
