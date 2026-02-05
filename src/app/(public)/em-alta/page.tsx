@@ -136,7 +136,7 @@ export default async function EmAlta() {
                 >
                   <Link
                     href={`/saiba-mais?destino=${place.city}`}
-                    className="group relative block aspect-[3/4] w-full overflow-hidden rounded-xl md:rounded-2xl bg-slate-900 shadow-xl transition-all active:scale-95 md:hover:-translate-y-2 md:hover:shadow-2xl [mask-image:linear-gradient(white,white)]"
+                    className="group relative block aspect-[3/4] w-full overflow-hidden rounded-xl md:rounded-2xl bg-slate-900 shadow-xl transition-all active:scale-95"
                   >
                     <div className="absolute inset-0 z-20 rounded-xl md:rounded-2xl border-2 border-brand-dark pointer-events-none" />
 
@@ -183,7 +183,7 @@ export default async function EmAlta() {
           <div className="relative z-10 mx-auto max-w-2xl space-y-8">
             <Badge
               variant="outline"
-              className="border-white/20 text-white/80 uppercase tracking-widest"
+              className="border-white/20 text-white/80 uppercase tracking-widest font-bold"
             >
               WhichWay Insider
             </Badge>
