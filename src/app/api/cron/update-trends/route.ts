@@ -34,7 +34,7 @@ interface DestinationInput {
   tips: string[];
 }
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
     console.log("Iniciando atualização de destinos...");
 

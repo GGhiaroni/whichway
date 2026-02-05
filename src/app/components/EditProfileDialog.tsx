@@ -109,6 +109,7 @@ export default function EditProfileDialog({ user }: EditProfileDialogProps) {
       }));
       toast.success("Endereço preenchido automaticamente!");
     } catch (error) {
+      console.error("Erro ao buscar CEP.", error);
       toast.error("Erro ao buscar CEP.");
     } finally {
       setIsLoadingCep(false);
@@ -156,6 +157,7 @@ export default function EditProfileDialog({ user }: EditProfileDialogProps) {
         toast.error(result.error || "Erro ao atualizar.");
       }
     } catch (error) {
+      console.error("Erro inesperado.", error);
       toast.error("Erro inesperado.");
     } finally {
       setIsSaving(false);

@@ -42,6 +42,7 @@ export default function DeleteTripDialog({
         toast.error(result.error || "Erro ao deletar.");
       }
     } catch (error) {
+      console.error("Erro ao deletar local.", error);
       toast.error("Ocorreu um erro ao tentar deletar o local.");
     } finally {
       setIsDeleting(false);

@@ -37,7 +37,7 @@ export default async function updateProfile(data: UpdateProfileProps) {
       return { success: false, error: "Usuário não encontrado no banco." };
     }
 
-    const updatedUser = await prisma.user.update({
+    await prisma.user.update({
       where: {
         id: dbUser.id,
       },
