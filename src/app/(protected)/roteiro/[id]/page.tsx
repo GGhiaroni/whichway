@@ -1,3 +1,4 @@
+import { DownloadButton, TripData } from "@/app/components/DownloadButton";
 import RoteiroActions from "@/app/components/RoteiroActions";
 import { prisma } from "@/lib/prisma";
 import { getUnsplashPhoto } from "@/lib/unsplash";
@@ -80,6 +81,26 @@ export default async function RoteiroPage({ params }: PageProps) {
 
   const itinerary = trip.itinerary as unknown as ItineraryContent;
 
+  const formattedItineraryForPDF = itinerary.dias.map((dia) => {
+    const activities = [
+      dia.manha?.atividade ? `Manhã: ${dia.manha.atividade}` : null,
+      dia.tarde?.atividade ? `Tarde: ${dia.tarde.atividade}` : null,
+      dia.noite?.atividade ? `Noite: ${dia.noite.atividade}` : null,
+    ].filter((item): item is string => Boolean(item));
+
+    return {
+      theme: dia.titulo,
+      activities: activities,
+    };
+  });
+
+  const tripForPdf: TripData = {
+    destination: trip.destination,
+    days: itinerary.dias.length,
+    pace: trip.pace,
+    itinerary: formattedItineraryForPDF,
+  };
+
   return (
     <div className="min-h-screen bg-[#FDF8F3] pb-20">
       <div className="relative h-[45vh] md:h-[55vh] w-full">
@@ -98,6 +119,10 @@ export default async function RoteiroPage({ params }: PageProps) {
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
             Voltar
           </Link>
+        </div>
+
+        <div className="absolute top-6 right-6 z-20">
+          <DownloadButton trip={tripForPdf} />
         </div>
 
         <div className="absolute bottom-0 left-0 w-full p-6 md:p-12 text-white z-10">
