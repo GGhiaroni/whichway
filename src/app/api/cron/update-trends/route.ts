@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { getUnsplashPhoto } from "@/lib/unsplash";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 interface HighlightInput {
   title: string;
   imageQuery: string;
