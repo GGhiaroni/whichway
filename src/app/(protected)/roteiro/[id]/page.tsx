@@ -122,7 +122,7 @@ export default async function RoteiroPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-[#FDF8F3] pb-20">
-      <div className="relative h-[45vh] md:h-[55vh] w-full">
+      <div className="relative h-[55vh] md:h-[70vh] w-full">
         <div
           className="absolute inset-0 bg-cover bg-center transition-transform duration-1000"
           style={{ backgroundImage: `url(${bgImage})` }}
@@ -130,18 +130,22 @@ export default async function RoteiroPage({ params }: PageProps) {
 
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/10" />
 
-        <div className="absolute top-6 left-6 z-20">
-          <Link
-            href="/meu-perfil"
-            className="group flex items-center gap-2 text-white/90 hover:text-white transition-all bg-black/20 hover:bg-black/40 backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium border border-white/10"
-          >
-            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            Voltar
-          </Link>
-        </div>
+        <div className="absolute top-0 left-0 w-full z-20 p-6 md:p-12 pointer-events-none">
+          <div className="max-w-4xl mx-auto flex justify-between items-start">
+            <div className="pointer-events-auto">
+              <Link
+                href="/meu-perfil"
+                className="group flex items-center gap-2 text-white/90 hover:text-white transition-all bg-black/20 hover:bg-black/40 backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium border border-white/10"
+              >
+                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                Voltar
+              </Link>
+            </div>
 
-        <div className="absolute top-6 right-6 z-20">
-          <DownloadButton trip={tripForPdf} />
+            <div className="pointer-events-auto">
+              <DownloadButton trip={tripForPdf} />
+            </div>
+          </div>
         </div>
 
         <div className="absolute bottom-0 left-0 w-full p-6 md:p-12 text-white z-10">
