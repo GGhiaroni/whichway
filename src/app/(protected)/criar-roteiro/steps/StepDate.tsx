@@ -85,8 +85,10 @@ export default function StepDates() {
               day_range_middle:
                 "bg-brand-primary/20 text-brand-primary hover:bg-brand-primary/30 hover:text-brand-primary rounded-none",
 
-              day_range_start: "rounded-l-md rounded-r-none",
-              day_range_end: "rounded-l-none rounded-r-md",
+              day_range_start:
+                "rounded-l-md rounded-r-none !bg-brand-primary !text-white hover:bg-brand-primary hover:text-white",
+              day_range_end:
+                "rounded-l-none rounded-r-md !bg-brand-primary !text-white hover:bg-brand-primary hover:text-white",
 
               caption_label:
                 "text-brand-dark font-bold text-lg capitalize mb-4",
