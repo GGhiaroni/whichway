@@ -3,6 +3,7 @@
 import generateTrip from "@/app/actions/generate-trip";
 import { suggestDestinations } from "@/app/actions/suggest-destination";
 import { Button } from "@/components/ui/button";
+import { PLACEHOLDER_IMAGES } from "@/lib/placeholders";
 import { useTripStore } from "@/store/trip-store";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -136,39 +137,45 @@ export default function StepSummary() {
         </p>
 
         <div className="grid gap-4 mb-6">
-          {suggestions.map((place, idx) => (
-            <div
-              key={idx}
-              onClick={() => {
-                setDestination(place.cidade);
-                createFinalTrip(place.cidade);
-              }}
-              className="group relative h-32 md:h-40 w-full rounded-2xl overflow-hidden cursor-pointer border-2 border-transparent hover:border-brand-primary transition-all shadow-lg"
-            >
+          {suggestions.map((place, idx) => {
+            const bgImage =
+              place.imagem ||
+              PLACEHOLDER_IMAGES[idx % PLACEHOLDER_IMAGES.length];
+
+            return (
               <div
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                style={{
-                  backgroundImage: `url(${place.imagem || "/placeholder.jpg"})`,
+                key={idx}
+                onClick={() => {
+                  setDestination(place.cidade);
+                  createFinalTrip(place.cidade);
                 }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/100 to-black/10" />
-              <div className="absolute bottom-0 left-0 p-4 md:p-6 w-full">
-                <div className="flex justify-between items-end">
-                  <div>
-                    <h3 className="font-bold text-xl text-white mb-1">
-                      {place.cidade}, {place.pais}
-                    </h3>
-                    <p className="text-sm font-bold text-white/80 line-clamp-1 md:line-clamp-none max-w-[80%]">
-                      {place.motivo}
-                    </p>
-                  </div>
-                  <div className="bg-brand-primary p-2 rounded-full text-white transform translate-x-10 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300">
-                    <ArrowRight className="w-5 h-5" />
+                className="group relative h-32 md:h-40 w-full rounded-2xl overflow-hidden cursor-pointer border-2 border-transparent hover:border-brand-primary transition-all shadow-lg"
+              >
+                <div
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                  style={{
+                    backgroundImage: `url(${bgImage})`,
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/100 to-black/10" />
+                <div className="absolute bottom-0 left-0 p-4 md:p-6 w-full">
+                  <div className="flex justify-between items-end">
+                    <div>
+                      <h3 className="font-bold text-xl text-white mb-1">
+                        {place.cidade}, {place.pais}
+                      </h3>
+                      <p className="text-sm font-bold text-white/80 line-clamp-1 md:line-clamp-none max-w-[80%]">
+                        {place.motivo}
+                      </p>
+                    </div>
+                    <div className="bg-brand-primary p-2 rounded-full text-white transform translate-x-10 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300">
+                      <ArrowRight className="w-5 h-5" />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <Button
