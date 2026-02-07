@@ -1,4 +1,5 @@
 import { DownloadButton, TripData } from "@/app/components/DownloadButton";
+import RoteiroActions from "@/app/components/RoteiroActions";
 import { prisma } from "@/lib/prisma";
 import { getUnsplashPhoto } from "@/lib/unsplash";
 import { auth } from "@clerk/nextjs/server";
@@ -39,14 +40,16 @@ interface ItineraryContent {
 }
 
 interface PageProps {
-  params: Promise<{
-    id: string;
-  }>;
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-export default async function RoteiroPage({ params }: PageProps) {
+export default async function RoteiroPage({ params, searchParams }: PageProps) {
   const { userId: clerkId } = await auth();
   const { id } = await params;
+
+  const { novo } = await searchParams;
+  const isJustCreated = novo === "true";
 
   if (!clerkId) {
     redirect("/sign-in");
@@ -245,6 +248,12 @@ export default async function RoteiroPage({ params }: PageProps) {
           ))}
         </div>
       </div>
+
+      {isJustCreated && (
+        <div className="fixed bottom-0 left-0 w-full z-50">
+          <RoteiroActions />
+        </div>
+      )}
     </div>
   );
 }

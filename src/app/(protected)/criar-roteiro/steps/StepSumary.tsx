@@ -71,7 +71,7 @@ export default function StepSummary() {
 
       if (result.success && result.tripId) {
         toast.success("Roteiro criado com sucesso! 🚀");
-        router.push(`/roteiro/${result.tripId}`);
+        router.push(`/roteiro/${result.tripId}?novo=true`);
         reset();
       } else {
         throw new Error(result.error || "Erro desconhecido");
