@@ -23,8 +23,21 @@ test("fluxo completo: login + wizard + resumo", async ({ page }) => {
 
   await expect(page).toHaveURL(/criar-roteiro/);
 
-  await page.getByRole("gridcell", { name: "7", exact: true }).first().click();
-  await page.getByRole("gridcell", { name: "26" }).first().click();
+  await expect(page.getByText("Quando será a viagem?")).toBeVisible();
+
+  const nextMonthBtn = page
+    .getByRole("button", { name: /next|próximo|go to next/i })
+    .first();
+
+  if (await nextMonthBtn.isVisible()) {
+    await nextMonthBtn.click();
+  } else {
+    await page.locator(".lucide-chevron-right").first().click();
+  }
+
+  await page.getByRole("gridcell", { name: "10", exact: true }).first().click();
+  await page.getByRole("gridcell", { name: "20", exact: true }).first().click();
+
   await page.getByRole("button", { name: "Continuar" }).click();
 
   await page.getByText("🏛️História").click();
