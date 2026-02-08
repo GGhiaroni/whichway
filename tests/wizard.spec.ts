@@ -55,5 +55,5 @@ test("fluxo completo: login + wizard + resumo", async ({ page }) => {
     page.getByRole("button", { name: /Descobrir destinos ideais/i }),
   ).toBeVisible();
 
-  console.log("✅ Teste E2E do Wizard concluído com sucesso!");
+  console.log("✅ Teste E2E do Wizard concluído com sucesso.");
 });
