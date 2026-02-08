@@ -1,0 +1,52 @@
+name: Playwright E2E Tests
+
+on:
+    push:
+        branches: [main, master]
+    pull_request:
+        branches: [main, master]
+
+jobs:
+    test:
+        timeout-minutes: 60
+        runs-on: ubuntu-latest
+
+        env:
+            DATABASE_URL: ${{ secrets.DATABASE_URL }}
+            GOOGLE_AI_API_KEY: ${{ secrets.GOOGLE_AI_API_KEY }}
+            UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+            NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+            CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+
+            NEXT_PUBLIC_CLERK_SIGN_IN_URL: /sign-in
+            NEXT_PUBLIC_CLERK_SIGN_UP_URL: /sign-up
+            NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL: /meu-perfil
+            NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL: /meu-perfil
+
+            NEXT_TELEMETRY_DISABLED: 1
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 18
+                  cache: "npm"
+
+            - name: Install Dependencies
+              run: npm ci --legacy-peer-deps
+
+            - name: Install Playwright Browsers
+              run: npx playwright install --with-deps
+
+            - name: Run Playwright tests
+              run: npm run test:e2e
+
+            - name: Upload Artifacts
+              if: always()
+              uses: actions/upload-artifact@v4
+              with:
+                  name: playwright-report
+                  path: playwright-report/
+                  retention-days: 30
