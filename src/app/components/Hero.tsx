@@ -7,6 +7,7 @@ export function Hero() {
     <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 text-center">
       <div className="absolute inset-0 z-0">
         <video
+          poster="/placeholder-place.jpg"
           autoPlay
           loop
           muted
