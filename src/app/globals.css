@@ -145,3 +145,8 @@
     @apply bg-brand-cream text-foreground;
   }
 }
+
+video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
