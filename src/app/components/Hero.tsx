@@ -13,7 +13,10 @@ export function Hero() {
           playsInline
           className="h-full w-full object-cover"
         >
-          <source src="/video-hero-section.mp4" type="video/mp4" />
+          <source
+            src="https://wp05tkopknv4l4dh.public.blob.vercel-storage.com/video-hero-section.mp4"
+            type="video/mp4"
+          />
           Seu navegador não suporta vídeos HTML5.
         </video>
 
