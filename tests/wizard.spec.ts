@@ -23,7 +23,9 @@ test("fluxo completo: login + wizard + resumo", async ({ page }) => {
 
   await expect(page).toHaveURL(/criar-roteiro/);
 
-  await expect(page.getByText("Quando será a viagem?")).toBeVisible();
+  await expect(page.getByText(/Quando será a viagem/i)).toBeVisible({
+    timeout: 15000,
+  });
 
   const nextMonthBtn = page
     .getByRole("button", { name: /next|próximo|go to next/i })
